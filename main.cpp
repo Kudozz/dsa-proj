@@ -1,6 +1,103 @@
 #include<iostream>
+#include<SFML/Graphics.hpp>
+#include "friends.h"
+#include "inventory.h"
+#include "leaderboard.h"
+#include "multiPlayer.h"
+#include "profile.h"
+#include "singlePlayer.h"
+
+
 using namespace std;
 
+bool signup();
+bool login();
+void mainMenu();
+
 int main() {
+    cout << "\n\n\t\t. ݁₊ ⊹ . ݁˖ . ݁.𖥔 ݁ ˖ ϟ ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ . ݁\t"<<endl
+        <<"\n\n\t\t\t\t Welcome Gamer\n\n "<<endl
+        <<"\t\t. ݁₊ ⊹ . ݁˖ . ݁.𖥔 ݁ ˖ ϟ ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ . ݁\t"<<endl;
+
+    while(true) {
+        int x;
+        cout<<"\n (1) Login"
+            <<"\n (2) Signup "
+            <<"\n (0) Exit"<<endl;
+        cin>>x;
+
+       switch(x) { 
+        case 0:
+            break;
+        case 1:
+            if (login())
+                mainMenu();
+            break;
+        case 2: {
+            if(signup())
+                mainMenu();
+            break;
+        }
+        default: {
+            cout<<"\nInvalid input, please try again";
+            continue;
+        }
+       }
+       break;
+    }
+    
     return 0;
 }
+
+void mainMenu() {
+    while(true) {
+    cout<<"\n\n . ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟ Main Menu ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ . ݁ "<<endl<<endl
+        <<"(1) Single Player"<<endl
+        <<"(2) Multiplayer"<<endl
+        <<"(3) Leaderboard"<<endl
+        <<"(4) Inventory"<<endl
+        <<"(5) Profile"<<endl
+        <<"(6) Friends"<<endl
+        <<"(0) Back"<<endl;
+
+    int op;
+    cin>>op;
+
+    switch(op) {
+        case 0: {
+            return;
+        }
+        case 1: {
+            singlePlayer();
+            break;
+        } 
+        case 2: {
+           // multiPlayer();
+            break;
+        }
+        case 3: {
+          //  leaderboard();
+            break;
+        }
+        case 4: {
+            //inventory();
+            break;
+        } 
+        case 5: {
+          //  profile();
+            break;
+        }
+        case 6: {
+         //   friends();
+            break;
+        }
+        default: {
+            cout<<"\nInvalid option, please try again";
+            break;
+        }
+    }
+    }
+}
+
+bool signup() {}
+bool login() {}
