@@ -101,9 +101,10 @@ bool usernameExists(const string& username){
     }
     
     string line, storedUser;
-    int l=line.length();
+  
     
     while (getline(file, line)){
+        int l = line.length();
         storedUser = "";
         int i = 0;
         

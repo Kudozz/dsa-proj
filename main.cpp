@@ -28,7 +28,7 @@ int main() {
 
        switch(x) { 
         case 0:
-            break;
+            return 0;
         case 1:
             if (login()){
                 mainMenu();
@@ -48,7 +48,6 @@ int main() {
             continue;
         }
        }
-       break;
     }
     
     return 0;
