@@ -1,8 +1,8 @@
 #include "authentication.h"
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cctype>
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<ctime>
 
 using namespace std;
 
@@ -28,7 +28,7 @@ bool isUserLoggedIn(){
 }
 
 string hashPassword(const string& password){
-    int hash = 12;
+    long long hash = 12;
     int l = password.length();
 
     for(int i = 0; i <l; i++){
@@ -127,8 +127,16 @@ bool usernameExists(const string& username){
 void saveCredentials(const string& username, const string& hashedPassword){
     ofstream file("audit.txt", ios::app);
     
+    time_t t = time(0);
+    char *tt = ctime(&t);
+    string timeStamp= string (tt);
+
+    if(!timeStamp.empty() && (timeStamp[timeStamp.length() -1]=='\n')){
+        timeStamp.erase(timeStamp.length()-1);
+    }
+
     if(file.is_open()){
-        file<< username <<":"<< hashedPassword << endl;
+        file<< username <<":"<< hashedPassword <<","<<timeStamp<< endl;
         file.close();
     } 
     
@@ -168,7 +176,7 @@ bool verifyPassword(const string& username, const string& password){
     
         i++; //skip the colon
     
-        while(i<l){
+        while((i<l)&&(line[i]!=' ')&&(line[i]!=',')){
             hash += line[i];
             i++;
         }
@@ -277,6 +285,8 @@ bool login(){
 
         }
     }
+
+
     
     cout<<"\nMaximum login attempts exceeded....Access denied!"<<endl;
     return false;
