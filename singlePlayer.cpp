@@ -3,16 +3,10 @@
 #include<string>
 #include<cstring>
 #include<string.h>
+#include"singlePlayer.h"
 
 using namespace std;
 using namespace sf;
-
-const int M = 25;
-const int N = 40;
-
-//whole grid
-int grid[M][N] = {0};
-int ts = 18; // tile size
 
 //1 marks borders/captured tiles
 //0 marks empty space
@@ -24,51 +18,9 @@ int ts = 18; // tile size
 //tile size (ts) is 18x18 
 // x/ts or y/ts is used to convert PIXEL position to GRID position
 
-struct Enemy
-{
-    int x, y, dx, dy;//x and y is position, dx and dy is speed
-
-    Enemy()
-    {
-        x = y = 300;//starting position, center of the grid
-        dx = 4 - rand() % 8;//random speeds
-        dy = 4 - rand() % 8;
-    }
-
-    void move()
-    {
-        x += dx;//move in x direction
-        if (grid[y / ts][x / ts] == 1)//if a solid tile is hit, reverse direction (bounce)
-        {
-            dx = -dx; // reverse speed
-            x += dx; // keep moving
-        }
-
-        y += dy;//move in y direction
-        if (grid[y / ts][x / ts] == 1)//solid line hit, reverse direction
-        { 
-            dy = -dy;//reverse dir
-            y += dy; // keep moving
-        }
-    }
-};
 
 // When you complete your trail, the game calls drop() starting at each enemy's position. Any empty area reachable
 // from an enemy gets marked -1. Everything NOT marked -1 becomes captured territory!
-
-void drop(int y, int x) //flood fill captured tiles
-{
-    if (grid[y][x] == 0) //current cell empty , mark as reachable by enemy
-        grid[y][x] = -1;
-    if (grid[y - 1][x] == 0) //check cell ABOVE current one (y-1) and recursivecall 
-        drop(y - 1, x);
-    if (grid[y + 1][x] == 0) // check cell BELOW (y+1) 
-        drop(y + 1, x);
-    if (grid[y][x - 1] == 0) //check cell on LEFT (x-1)
-        drop(y, x - 1);
-    if (grid[y][x + 1] == 0) // check cell on RIGHT (x+1)
-        drop(y, x + 1);
-}
 
 void singlePlayer() {//main game
     srand(time(0));

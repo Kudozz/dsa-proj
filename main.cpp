@@ -4,10 +4,9 @@
 #include "friends.h"
 #include "inventory.h"
 #include "leaderboard.h"
-#include "multiPlayer.h"
 #include "profile.h"
 #include "singlePlayer.h"
-
+#include "multiPlayer.h"
 
 using namespace std;
 
@@ -76,7 +75,7 @@ void mainMenu() {
             break;
         } 
         case 2: {
-           // multiPlayer();
+            multiPlayer();
             break;
         }
         case 3: {
