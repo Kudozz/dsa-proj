@@ -1,5 +1,6 @@
 #include<iostream>
 #include<SFML/Graphics.hpp>
+#include "authentication.h"
 #include "friends.h"
 #include "inventory.h"
 #include "leaderboard.h"
@@ -10,8 +11,7 @@
 
 using namespace std;
 
-bool signup();
-bool login();
+
 void mainMenu();
 
 int main() {
@@ -30,12 +30,17 @@ int main() {
         case 0:
             break;
         case 1:
-            if (login())
+            if (login()){
                 mainMenu();
+                clearCurrentUser();
+            }
             break;
+
         case 2: {
-            if(signup())
+            if(signup()){
                 mainMenu();
+                clearCurrentUser();
+            }
             break;
         }
         default: {
@@ -58,7 +63,7 @@ void mainMenu() {
         <<"(4) Inventory"<<endl
         <<"(5) Profile"<<endl
         <<"(6) Friends"<<endl
-        <<"(0) Back"<<endl;
+        <<"(0) Logout"<<endl;
 
     int op;
     cin>>op;
@@ -98,6 +103,3 @@ void mainMenu() {
     }
     }
 }
-
-bool signup() {}
-bool login() {}
