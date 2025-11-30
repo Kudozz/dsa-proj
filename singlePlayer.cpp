@@ -7,6 +7,7 @@
 #include<cstring>
 #include<string.h>
 #include"singlePlayer.h"
+#include"Player.h"
 
 using namespace std;
 using namespace sf;
@@ -28,7 +29,6 @@ using namespace sf;
 // player moves in TILE coordinates 
 // tile size (ts) is 18x18 
 // x/ts or y/ts is used to convert PIXEL position to GRID position
-
 
 
 //When you complete your trail, the game calls drop() starting at each enemy's position. Any empty area reachable

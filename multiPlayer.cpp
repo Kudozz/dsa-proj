@@ -7,6 +7,7 @@
 #include <string>
 #include <cstring>
 #include <string.h>
+#include<iostream>
 
 //Wajiha Abbasi 24i-2059
 //Hanaa Sajid  24i-2029
@@ -29,7 +30,7 @@ using namespace sf;
 //  x/ts or y/ts is used to convert PIXEL position to GRID position
 
 
-Player::Player(int x, int y) {
+GPlayer::GPlayer(int x, int y) {
     this->x = x;
     this->y = y;
     dx = 0;
@@ -42,24 +43,23 @@ Player::Player(int x, int y) {
     rewardCounter = 0;
 }
 
-void Player::reset() {
-    x = 0;
-    y = 10;
+void GPlayer::reset() {
     points = 0;
+    alive = true;
     multiplier =2;
     threshold = 10; 
     rewardCounter = 0;
 }
 
-void Player::die() {
+void GPlayer::die() {
     alive = false;
 }
 
-bool Player::isMoving() {
+bool GPlayer::isMoving() {
     if(dx !=0 || dy != 0) return true;
     else return false;
 }
-void Player::clamp() {
+void GPlayer::clamp() {
     if (x < 0)
         x = 0;
     if (x > N - 1)
@@ -73,31 +73,39 @@ void Player::clamp() {
 // When you complete your trail, the game calls drop() starting at each enemy's position. Any empty area reachable
 // from an enemy gets marked -1. Everything NOT marked -1 becomes captured territory!
 
-void updatePlayerMovement(Player &player, int ownTrail, int oppTrail){
+void updatePlayerMovement(GPlayer &player, int ownTrail, int oppTrail){
     player.x += player.dx;
     player.y += player.dy;
 
     player.clamp();
 
-    if (grid[player.y][player.x] == ownTrail)
-        player.die();
+    int currentCell = grid[player.y][player.x];
 
-    if (grid[player.y][player.x] == oppTrail)
+    // Check if player hit their own trail or opponent's trail
+    if (currentCell == ownTrail || currentCell == oppTrail) {
         player.die();
+        return;
+    }
 
-    if (grid[player.y][player.x] == 0)
+    // Only place trail on empty spaces (0)
+    // Don't overwrite opponent's captured tiles (4 or 5) or borders (1)
+    if (currentCell == 0)
         grid[player.y][player.x] = ownTrail;
 }
 
-void handleCapture(Player &player, Enemy a[], int enemyCount, int ownCaptured) {            
+void handleCapture(GPlayer &player, Enemy a[], int enemyCount, int ownCaptured) {
         // if player reached solid territory - successfully captured
         player.dx = player.dy = 0; // stop moving
 
         int oldTileCount = 0;
         int newTileCount = 0;
 
-        for (int i = 0; i < M; i++)
-        {
+        // Determine own trail value based on captured value
+        // If ownCaptured is 5 (player 1), ownTrail is 3
+        // If ownCaptured is 4 (player 2), ownTrail is 2
+        int ownTrail = ((ownCaptured == 5) ? 3 : 2);
+
+        for (int i = 0; i < M; i++)  {
             for (int j = 0; j < N; j++)
                 if (grid[i][j] == ownCaptured)
                     oldTileCount++;
@@ -110,7 +118,7 @@ void handleCapture(Player &player, Enemy a[], int enemyCount, int ownCaptured) {
             for (int j = 0; j < N; j++)
                 if (grid[i][j] == -1) // if the place is reachable by enemy, dont fill it
                     grid[i][j] = 0;
-                else if (grid[i][j] == 0 || grid[i][j] == 2 || grid[i][j] == 3) 
+                else if (grid[i][j] == 0 || grid[i][j] == ownTrail) // Only convert own trail, not opponent's
                     grid[i][j] = ownCaptured;
 
         for (int i = 0; i < M; i++) {
@@ -155,16 +163,37 @@ void handleCapture(Player &player, Enemy a[], int enemyCount, int ownCaptured) {
             player.powerups += newMilestones;
         }
 
+        // cout << "Capture called for player at (" << player.x << "," << player.y << ") with ownCaptured=" << ownCaptured << " and ownTrail=" << ownTrail << endl;
+        // cout << "Old tiles: " << oldTileCount << ", New tiles: " << newTileCount << ", Points awarded: " << newPts << endl;
 }
 
-void multiPlayer()
-{ // main game
+bool isGridFull() {
+    for(int i=1; i<M-1; i++) {
+        for(int j=1; j<N-1; j++)
+            if(grid[i][j] == 0)
+                return false;
+    }
+    return true;
+}
 
-    Player player1(0, 10), player2(N-1, 10);
+void clearGrid() {
+    for(int i=1; i<M-1; i++) {
+        for(int j=1; j<N-1; j++)
+            grid[i][j] = 0;
+}
+}
+
+void multiPlayer(){ // main game
     srand(time(0));
 
     Font font;
     font.loadFromFile("Guntech.otf");
+
+    Text deadtext;
+    deadtext.setFont(font);
+    deadtext.setCharacterSize(25);
+    deadtext.setFillColor(Color::Red);
+    deadtext.setPosition(200.f, 450.f);
 
     // draw grid
     RenderWindow window(VideoMode(N * ts, M * ts + 80), "Xonix Game!");
@@ -180,6 +209,7 @@ void multiPlayer()
     sGameover.setPosition(100, 100); // game over is displayed at the center of the screen
     sEnemy.setOrigin(20, 20);        // center of rotation of enemy
 
+    GPlayer player1(0, 10), player2(N - 1, 10);
     int enemyCount = 4;
     Enemy a[10]; // there can be upto 10 enemies, we are using 4
 
@@ -199,8 +229,7 @@ void multiPlayer()
             if (i == 0 || j == 0 || i == M - 1 || j == N - 1)
                 grid[i][j] = 1;
 
-    while (window.isOpen())
-    {
+    while (window.isOpen())   {
         float time = clock.getElapsedTime().asSeconds();
         clock.restart();
         timer += time;
@@ -211,10 +240,8 @@ void multiPlayer()
             if (e.type == Event::Closed) // player clicked X
                 window.close();
 
-            if (e.type == Event::KeyPressed)
-            {                                       // any key was pressed
-                if (e.key.code == Keyboard::Escape) // check if its the escape key, restart game
-                {
+            if (e.type == Event::KeyPressed)  {                                       // any key was pressed
+                if (e.key.code == Keyboard::Escape) {// check if its the escape key, restart game    {
                     for (int i = 1; i < M - 1; i++)
                         for (int j = 1; j < N - 1; j++)
                             grid[i][j] = 0; // reset everything except borders
@@ -227,6 +254,8 @@ void multiPlayer()
                     player2.y = 10;
                     player1.points = 0;
                     player2.points = 0;
+
+                    clearGrid();
                     Game = true; // restaet game
                 }
 
@@ -295,14 +324,34 @@ void multiPlayer()
             continue;
 
         if (timer > delay){
-
-            if(player1.alive && !freeze[1]) 
+            if(player1.alive && !freeze[1]) {
+                bool hadTrail = (player1.dx != 0 || player1.dy != 0);
                 updatePlayerMovement(player1, 3, 2);
 
-            if(player2.alive && !freeze[0])
+                // Handle capture immediately after movement while not frozen
+                if(hadTrail && ((grid[player1.y][player1.x] == 1) || (grid[player1.y][player1.x] == 5)))
+                    handleCapture(player1, a, enemyCount, 5);
+            }
+
+            if(!player1.alive) {
+                deadtext.setString("PLAYER 1 DEAD!!!!");
+            }
+
+            if(player2.alive && !freeze[0]) {
+                bool hadTrail = (player2.dx != 0 || player2.dy != 0);
                 updatePlayerMovement(player2, 2, 3);
 
+                // Handle capture immediately after movement while not frozen
+                if(hadTrail && ((grid[player2.y][player2.x] == 1) || (grid[player2.y][player2.x] == 4)))
+                    handleCapture(player2, a, enemyCount, 4);
+            }
+
+            if(!player2.alive) {
+                deadtext.setString("PLAYER 2 DEAD!!!!");
+            }
+
             if (!player1.alive && !player2.alive) {
+                deadtext.setString("BOTH PLAYERS DEAD!!!!");
                 Game = false;
             }
 
@@ -310,14 +359,19 @@ void multiPlayer()
                 if(player1.isMoving() && player2.isMoving()) {
                     player1.die();
                     player2.die();
+
+                    deadtext.setString("BOTH PLAYERS DEAD!!!!");
                 }
 
                 if(player1.isMoving() && !player2.isMoving()) {
                     player1.die();
+                    deadtext.setString("PLAYER 1 DEAD!!!!");
                 }
 
-                if(!player1.isMoving() && player2.isMoving()) 
+                if(!player1.isMoving() && player2.isMoving()) {
                     player2.die();
+                    deadtext.setString("PLAYER 2 DEAD!!!!");
+                }
             }
 
             if (!player1.alive && !player2.alive){
@@ -332,21 +386,23 @@ void multiPlayer()
                 a[i].move();
         //-----------------------------------------CAPTURING + POINTS --------------------------------------------------------------------------
 
-        if((grid[player1.y][player1.x] == 1) || (grid[player1.y][player1.x] == 5)) 
-            handleCapture(player1, a, enemyCount, 5);
-
-        if((grid[player2.y][player2.x] == 1) || (grid[player2.y][player2.x] == 4)) 
-               handleCapture(player2, a, enemyCount, 4);
 
         for (int i = 0; i < enemyCount; i++)
             if (grid[a[i].y / ts][a[i].x / ts] == 2)   {                 // if the enemy hits ur trail
                 player2.die();
+                deadtext.setString("PLAYER 2 DEAD!!!!");
             }
 
          for (int i = 0; i < enemyCount; i++)
             if (grid[a[i].y / ts][a[i].x / ts] == 3)   {                 // if the enemy hits ur trail
                 player1.die();
+                deadtext.setString("PLAYER 1 DEAD!!!!");
             }
+
+        if(isGridFull()) {
+            Game = false; 
+        }
+
 
         Text scoreText1;
         scoreText1.setFont(font);
@@ -367,20 +423,19 @@ void multiPlayer()
         // drawing tiles
 
         for (int i = 0; i < M; i++)
-            for (int j = 0; j < N; j++)
-            {
-                if (grid[i][j] == 0) // dont draw anything on enemy space
+            for (int j = 0; j < N; j++){
+                if (grid[i][j] == 0 || grid[i][j] == -1) // dont draw anything on enemy space
                     continue;
                 if (grid[i][j] == 1)
                     sTile.setTextureRect(IntRect(0, 0, ts, ts)); // filled space (blue ile)
                 if (grid[i][j] == 2)
                     sTile.setTextureRect(IntRect(54, 0, ts, ts)); // trail p2
                 if (grid[i][j] == 3)
-                    sTile.setTextureRect(IntRect(90, 0, ts, ts)); // trail p1
+                    sTile.setTextureRect(IntRect(108, 0, ts, ts)); // trail p1
                 if (grid[i][j] == 4)
-                    sTile.setTextureRect(IntRect(72, 0, ts, ts)); // captured p2
+                    sTile.setTextureRect(IntRect(90, 0, ts, ts)); // captured p2
                 if (grid[i][j] == 5)
-                    sTile.setTextureRect(IntRect(108, 0, ts, ts)); // captured p1
+                    sTile.setTextureRect(IntRect(72, 0, ts, ts)); // captured p1
                 // IntRect(0, 0, ts, ts) means: start at pixel (0,0) in the image, grab an 18×18 area
 
                 // actually drawing
@@ -393,7 +448,7 @@ void multiPlayer()
         sTile.setPosition(player1.x * ts, player1.y * ts);            // convert grid to pizel
         window.draw(sTile);                           // DRAWWW
 
-        sTile.setTextureRect(IntRect(18, 0, ts, ts));      // red rect
+        sTile.setTextureRect(IntRect(18, 0, ts, ts));   
         sTile.setPosition(player2.x * ts, player2.y * ts); // convert grid to pizel
         window.draw(sTile);
 
@@ -401,23 +456,23 @@ void multiPlayer()
         // This happens every frame, making enemies spin continuously
 
         // draw enemy
-        for (int i = 0; i < enemyCount; i++)
-        {
+        for (int i = 0; i < enemyCount; i++)    {
             sEnemy.setPosition(a[i].x, a[i].y); // set position , directly in pixels since enemies move in pixel
             window.draw(sEnemy);
         }
 
-        
+        if(!player1.alive || !player2.alive)
+        window.draw(deadtext);
 
-        if (!Game)
-        {
+        if (!Game){
             window.draw(sGameover); // game overrrr
+
 
             Text winnerText;
             winnerText.setFont(font);
             winnerText.setCharacterSize(25);
             winnerText.setFillColor(Color::Red);
-            winnerText.setPosition(200.f, 450.f);
+            winnerText.setPosition(200.f, 470.f);
 
             if(player1.points > player2.points) {
                 winnerText.setString("PLAYER 1 WINS!!!!");
@@ -432,35 +487,10 @@ void multiPlayer()
         window.draw(scoreText1);
 
         window.draw(scoreText2);
-    
 
         window.display();
     }
 
-// Replace the profile update section at the end with:
-string username1 = getCurrentUser();
-string username2;
-cout << "\nEnter Player 2 username: ";
-cin >> username2;
-
-// Check if Player 2 exists
-string playerID;
-if (userExistsInAudit(username2, playerID)) {
-    // Log match for both players
-    logMatch(username1, username2, player1.points, player2.points);
-    logMatch(username2, username1, player2.points, player1.points);
-    
-    cout << "\nMatch logged for both players!\n";
-    cout << "Player 1 Total Points: " << getTotalPoints(username1) << "\n";
-    cout << "Player 2 Total Points: " << getTotalPoints(username2) << "\n";
-} else {
-    // Only log for Player 1
-    logMatch(username1, "Guest", player1.points, player2.points);
-    
-    cout << "\nMatch logged for Player 1!\n";
-    cout << "Player 2 not registered.\n";
-    cout << "Player 1 Total Points: " << getTotalPoints(username1) << "\n";
-}
     return;
 }
 

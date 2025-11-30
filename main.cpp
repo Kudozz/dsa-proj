@@ -143,7 +143,7 @@ void mainMenu() {
         }
 
         case 3: {
-          //  leaderboard();
+            leaderboard();
             break;
         }
         case 4: {
@@ -151,51 +151,7 @@ void mainMenu() {
             break;
         } 
         case 5: {
-            int choice;
-
-            cout<<"Welcome "<<user;
-            cout<<" !!"<<endl<<endl;
-
-            cout<<"Menu: \n"
-            <<"1. Add friend\n"
-            <<"2. View all friends"
-            <<"\n3. Match history"
-            <<"\n4. Total points"
-            <<"\n0. exit"
-            <<"\nBack"<<endl;;
-
-            cout<<"Enter choice: ";
-            cin>>choice;
-
-            switch(choice){
-                case 0:{
-                    return;
-                }
-                
-            case 1:
-                addFriend(user);
-                break;
-
-            case 2:
-                displayFriends(user);
-                break;
-
-            case 3:
-                displayMatchHistory(user);
-                break;
-
-            case 4:
-                cout<<"\nTotal points: "<<getTotalPoints(user)<<"\n";
-                break;
-
-            case 5:
-                cout<<"\nReturning to main menu...\n";
-                break;
-
-            default:
-                cout<<"\nInvalid choice!\n";
-        }
-
+          //  viewProfile(getCurrentUser());
             break;
         }
 

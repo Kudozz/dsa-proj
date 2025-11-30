@@ -1,56 +1,65 @@
-// player.h
 #ifndef PLAYER_H
 #define PLAYER_H
 
 #include <string>
+#include <iostream>
 using namespace std;
 
-//Wajiha Abbasi 24i-2059
-//Hanaa Sajid  24i-2029
-//PROJECT: XONIX GAME
 
-// Friend node for linked list
-struct FriendNode {
+
+struct FriendNode{
     string username;
     int playerID;
     FriendNode* next;
-    
-    FriendNode(string user, int id) : username(user), playerID(id), next(nullptr) {}
+
+    FriendNode(string user, int id)
+        : username(user), playerID(id), next(nullptr) {}
 };
 
-// Match record structure
-struct MatchRecord {
-    string opponent;
-    int myPoints;
-    int oppPoints;
-    string result; // "WIN", "LOSS", "DRAW"
-    
-    MatchRecord() : opponent(""), myPoints(0), oppPoints(0), result("") {}
-    MatchRecord(string opp, int my, int opp_pts, string res) 
-        : opponent(opp), myPoints(my), oppPoints(opp_pts), result(res) {}
-};
 
-// Main Player structure
-struct Player {
-    string username;
+struct Player{
+     string username;
     int playerID;
     int totalScore;
-    int matchCount;
+    int matchCount; 
     int wins;
     int losses;
     int draws;
     int currentThemeID;
-    FriendNode* friendsHead;  // Linked list of friends
-    
-    // Constructor
-    Player() : username(""), playerID(0), totalScore(0), matchCount(0), 
-               wins(0), losses(0), draws(0), currentThemeID(1), friendsHead(nullptr) {}
-    
-    Player(string user, int id) : username(user), playerID(id), totalScore(0), 
-                                   matchCount(0), wins(0), losses(0), draws(0), 
-                                   currentThemeID(1), friendsHead(nullptr) {}
-    
-    // Destructor to free friends list
+
+    FriendNode* friendsHead;
+
+    // ConstructorS
+    Player()
+        : username(""),
+          playerID(0),
+          totalScore(0),
+          matchCount(0),
+          wins(0),
+          losses(0),
+          draws(0),
+          currentThemeID(1),
+          friendsHead(nullptr) {}
+
+    Player(string user, int id)
+        : username(user),
+          playerID(id),
+          totalScore(0),
+          matchCount(0),
+          wins(0),
+          losses(0),
+          draws(0),
+          currentThemeID(1),
+          friendsHead(nullptr) {}
+
+
+    //for leaderboard
+    Player(string user, int id, int total, int matches, int w, int l, int d, int theme)
+    : username(user), playerID(id), totalScore(total), matchCount(matches),
+      wins(w), losses(l), draws(d), currentThemeID(theme), friendsHead(nullptr) {}
+
+
+    // Destructor
     ~Player() {
         FriendNode* current = friendsHead;
         while (current) {
@@ -59,101 +68,108 @@ struct Player {
             delete temp;
         }
     }
-    
-    // Add friend to player's friend list
+
+ 
     void addFriend(string friendUsername, int friendID) {
         FriendNode* newNode = new FriendNode(friendUsername, friendID);
         newNode->next = friendsHead;
         friendsHead = newNode;
     }
-    
-    // Check if already friends
+
+
+    void rmFriend(string friendUser){
+    FriendNode* current = friendsHead;
+    FriendNode* prev = nullptr;
+
+    while (current) {
+        if (current->username == friendUser) {
+            if (prev) {
+                prev->next = current->next;
+            } else {
+                friendsHead = current->next;
+            }
+            delete current;
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+}
+
     bool isFriend(string friendUsername) {
         FriendNode* current = friendsHead;
         while (current) {
-            if (current->username == friendUsername) {
+            if (current->username == friendUsername)
                 return true;
-            }
             current = current->next;
         }
         return false;
     }
-    
-    // Get friend count
+
     int getFriendCount() {
-        int count = 0;
+        int cnt = 0;
         FriendNode* current = friendsHead;
         while (current) {
-            count++;
+            cnt++;
             current = current->next;
         }
-        return count;
+        return cnt;
     }
-    
-    // Add match result and update stats
+
+
     void addMatchResult(string opponent, int myPoints, int oppPoints) {
         matchCount++;
         totalScore += myPoints;
-        
-        if (myPoints > oppPoints) {
+
+        if (myPoints > oppPoints)
             wins++;
-        } else if (myPoints < oppPoints) {
+        else if (myPoints < oppPoints)
             losses++;
-        } else {
+        else
             draws++;
-        }
     }
-    
-    // Calculate win rate
-    float getWinRate() {
-        if (matchCount == 0) return 0.0f;
-        return (float)wins / matchCount * 100.0f;
-    }
-    
-    // Display player stats
+
+
     void displayStats() {
-        cout << "\n⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊\n";
-        cout << "           PLAYER STATS\n";
-        cout << "⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊\n";
+        cout << "\n⋆ Player Stats ⋆\n";
         cout << "Username: " << username << "\n";
         cout << "Player ID: " << playerID << "\n";
         cout << "Total Score: " << totalScore << "\n";
         cout << "Matches Played: " << matchCount << "\n";
-        cout << "Wins: " << wins << " | Losses: " << losses << " | Draws: " << draws << "\n";
-        cout << "Win Rate: " << getWinRate() << "%\n";
+        cout << "Wins: " << wins
+             << " | Losses: " << losses
+             << " | Draws: " << draws << "\n";
         cout << "Friends: " << getFriendCount() << "\n";
-        cout << "Current Theme ID: " << currentThemeID << "\n";
-        cout << "⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊\n";
+        cout << "Theme ID: " << currentThemeID << "\n";
     }
-    
-    // Display friends list
+
     void displayFriends() {
-        if (friendsHead == nullptr) {
+        if (!friendsHead) {
             cout << "\nNo friends added yet!\n";
             return;
         }
-        
-        cout << "\n⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊\n";
-        cout << "           YOUR FRIENDS\n";
-        cout << "⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊\n";
-        
+
+        cout << "\n⋆ Friend List ⋆\n";
         FriendNode* current = friendsHead;
-        int count = 1;
+        int counter = 1;
+
         while (current) {
-            cout << count++ << ". " << current->username << " (ID: " << current->playerID << ")\n";
+            cout << counter++ << ". " << current->username
+                 << " (ID: " << current->playerID << ")\n";
             current = current->next;
         }
-        
-        cout << "⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊\n";
     }
 };
 
-// Global functions for player management
+
 Player* loadPlayer(const string& username);
 void savePlayer(const Player& player);
 void createNewPlayer(const string& username, int playerID);
+
 Player* getCurrentPlayer();
 void setCurrentPlayer(Player* player);
 void clearCurrentPlayer();
 
-#endif // PLAYER_H
+#endif
+
+

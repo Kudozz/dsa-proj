@@ -1,6 +1,7 @@
 #include "authentication.h"
 #include"player.h"
 #include"SystemLogs.h"
+#include"Player.h"
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -419,7 +420,6 @@ bool login(){
           
             cout<<"\nLogin successful! Welcome back, "<<username <<"!"<<endl;
             logSysActivity(username,"Login","SUCCESS");
-
              
             return true;
         } 

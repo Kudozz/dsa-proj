@@ -8,59 +8,16 @@
 
 using namespace std;
 
-// FriendsList::FriendsList(){
-//     head =nullptr;
-// }
 
-// FriendsList::~FriendsList(){
-//     FriendNode* current = head;
-    
-//     while (current){
-//         FriendNode* temp = current;
-//         current = current->next;
-        
-//         delete temp;
-//     }
 
-// }
+//Wajiha Abbasi 24i-2059
+//Hanaa Sajid  24i-2029
+//PROJECT: XONIX GAME
 
-// void FriendsList::addFriend(string username,string playerID){
-//     FriendNode* newNode = new FriendNode(username, playerID);
-//     newNode->next = head;
-    
-//     head = newNode;
-// }
 
-// void FriendsList::displayFriends(){
-//     if(isEmpty()){
-//         cout<<"\nNo friends added yet!\n";
-
-//         return;
-//     }
-    
-//     cout <<"\n⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n"
-//     <<"           YOUR FRIENDS\n"
-//     <<"⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n";
-
-//     FriendNode* current = head;
-//     int count =1;
-    
-//     while(current){
-//         cout<<count++ <<". "<<current->username<<" (ID: "<<current->playerID<<")\n";
-        
-//             current = current->next;
-//     }
-    
-//     cout<<"⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n";
-
-// }
-
-// bool FriendsList::isEmpty(){
-//     return head == nullptr;
-// }
 
 //DOES THE USER EXIST IIN AUDIT.TXT HUHHH??? DOES IT ??? DOES IT NOWWW???HUHHHHHHHHH??
-bool userExistsInAudit(string username, string& playerID){
+bool userExistsInAudit(string username,int playerID){
     ifstream file;
     file.open("audit.txt");
 
@@ -109,7 +66,7 @@ bool userExistsInAudit(string username, string& playerID){
 }
 
 // Add friend
-void addFriend(string currentUser) {
+void addFriend(){
     Player* player= getCurrentPlayer();
 
     if(!player){
@@ -153,7 +110,7 @@ void addFriend(string currentUser) {
 }
 
 //display friends(me n my lil twin tower)
-void displayFriends(string currentUser){
+void displayFriends(){
 
     Player* player = getCurrentPlayer();
     
@@ -192,7 +149,7 @@ void displayFriends(string currentUser){
 
 //logging math resiult to user's mathes file
 void logMatch(string username, string opponent,int myPoints, int oppPoints){
-    player* player= getCurrentPlayer();
+    Player* player= getCurrentPlayer();
 
      if(!player){
         cout<<"no player loasded!"<<endl;
@@ -273,8 +230,8 @@ void displayMatchHistory(string username){
     //     }
     // }
     
-    cout << "⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n";
-    file.close();
+    //cout << "⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n";
+    //file.close();
 }
 
 //total points calculated by reading user's points from their matches file
