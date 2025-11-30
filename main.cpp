@@ -97,7 +97,7 @@ void mainMenu() {
             break;
         } 
         case 5: {
-            //profile();
+            viewProfile(getCurrentUser());
             break;
         }
         case 6: {
