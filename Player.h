@@ -1,33 +1,37 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include<iostream>
-#include<fstream>
+#include "SystemLogs.h"
+#include <string>
+#include <iostream>
 using namespace std;
 
-#include"SystemLogs.h"
+// Wajiha Abbasi 24i-2059
+// Hanaa Sajid  24i-2029
+// PROJECT: XONIX GAME
 
-struct FriendNode{
+struct FriendNode
+{
     string username;
     int playerID;
-    FriendNode* next;
+    FriendNode *next;
 
     FriendNode(string user, int id)
         : username(user), playerID(id), next(nullptr) {}
 };
 
-
-struct Player{
-     string username;
+struct Player
+{
+    string username;
     int playerID;
     int totalScore;
-    int matchCount; 
+    int matchCount;
     int wins;
     int losses;
     int draws;
     int currentThemeID;
 
-    FriendNode* friendsHead;
+    FriendNode *friendsHead;
 
     // ConstructorS
     Player()
@@ -52,57 +56,60 @@ struct Player{
           currentThemeID(1),
           friendsHead(nullptr) {}
 
-
-    //for leaderboard
+    // for leaderboard
     Player(string user, int id, int total, int matches, int w, int l, int d, int theme)
-    : username(user), playerID(id), totalScore(total), matchCount(matches),
-      wins(w), losses(l), draws(d), currentThemeID(theme), friendsHead(nullptr) {}
-
+        : username(user), playerID(id), totalScore(total), matchCount(matches),
+          wins(w), losses(l), draws(d), currentThemeID(theme), friendsHead(nullptr) {}
 
     // Destructor
-    ~Player() {
-        FriendNode* current = friendsHead;
-        while (current) {
-            FriendNode* temp = current;
+    ~Player()
+    {
+        FriendNode *current = friendsHead;
+        while (current)
+        {
+            FriendNode *temp = current;
             current = current->next;
             delete temp;
         }
     }
 
- 
-    void addFriend(string friendUsername, int friendID) {
-        FriendNode* newNode = new FriendNode(friendUsername, friendID);
+    void addFriend(string friendUsername, int friendID)
+    {
+        FriendNode *newNode = new FriendNode(friendUsername, friendID);
         newNode->next = friendsHead;
         friendsHead = newNode;
     }
 
-
     void rmFriend(string friendUser){
-    FriendNode* current = friendsHead;
-    FriendNode* prev = nullptr;
+        FriendNode *current = friendsHead;
+        FriendNode *prev = nullptr;
 
-    while (current) {
-        if (current->username == friendUser) {
-            if (prev) {
-                prev->next = current->next;
-            } else {
-                friendsHead = current->next;
+        while (current)
+        {
+            if (current->username == friendUser){
+                if (prev) {
+                    prev->next = current->next;
+                }
+                else
+                {
+                    friendsHead = current->next;
+                }
+                delete current;
+                return;
             }
-            delete current;
-            return;
+            prev = current;
+            current = current->next;
         }
-        prev = current;
-        current = current->next;
+
+        cout << "Friend does not exist" << endl;
+        logSysActivity(username, "Remove friend attempt", "FAILED-friend does not exist");
     }
 
-    cout<<"Friend does not exist"<<endl;
-    logSysActivity(username,"Remove friend attempt","FAILED-friend does not exist");
-    
-}
-
-    bool isFriend(string friendUsername) {
-        FriendNode* current = friendsHead;
-        while (current) {
+    bool isFriend(string friendUsername)
+    {
+        FriendNode *current = friendsHead;
+        while (current)
+        {
             if (current->username == friendUsername)
                 return true;
             current = current->next;
@@ -110,18 +117,20 @@ struct Player{
         return false;
     }
 
-    int getFriendCount() {
+    int getFriendCount()
+    {
         int cnt = 0;
-        FriendNode* current = friendsHead;
-        while (current) {
+        FriendNode *current = friendsHead;
+        while (current)
+        {
             cnt++;
             current = current->next;
         }
         return cnt;
     }
 
-
-    void addMatchResult(string opponent, int myPoints, int oppPoints) {
+    void addMatchResult(string opponent, int myPoints, int oppPoints)
+    {
         matchCount++;
         totalScore += myPoints;
 
@@ -133,8 +142,8 @@ struct Player{
             draws++;
     }
 
-
-    void displayStats() {
+    void displayStats()
+    {
         cout << "\n⋆ Player Stats ⋆\n";
         cout << "Username: " << username << "\n";
         cout << "Player ID: " << playerID << "\n";
@@ -147,17 +156,20 @@ struct Player{
         cout << "Theme ID: " << currentThemeID << "\n";
     }
 
-    void displayFriends() {
-        if (!friendsHead) {
+    void displayFriends()
+    {
+        if (!friendsHead)
+        {
             cout << "\nNo friends added yet!\n";
             return;
         }
 
         cout << "\n⋆ Friend List ⋆\n";
-        FriendNode* current = friendsHead;
+        FriendNode *current = friendsHead;
         int counter = 1;
 
-        while (current) {
+        while (current)
+        {
             cout << counter++ << ". " << current->username
                  << " (ID: " << current->playerID << ")\n";
             current = current->next;
@@ -165,15 +177,12 @@ struct Player{
     }
 };
 
+Player *loadPlayer(const string &username);
+void savePlayer(const Player &player);
+void createNewPlayer(const string &username, int playerID);
 
-Player* loadPlayer(const string& username);
-void savePlayer(const Player& player);
-void createNewPlayer(const string& username, int playerID);
-
-Player* getCurrentPlayer();
-void setCurrentPlayer(Player* player);
+Player *getCurrentPlayer();
+void setCurrentPlayer(Player *player);
 void clearCurrentPlayer();
 
 #endif
-
-
