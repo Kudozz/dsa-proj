@@ -4,6 +4,11 @@
 #include <string>
 using namespace std;
 
+//Wajiha Abbasi 24i-2059
+//Hanaa Sajid  24i-2029
+//PROJECT: XONIX GAME
+
+
 bool signup();
 bool login();
 bool isValidPassword(const string& password);

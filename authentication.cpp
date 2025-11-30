@@ -1,10 +1,15 @@
 #include "authentication.h"
+#include"SystemLogs.h"
 #include<iostream>
 #include<fstream>
 #include<string>
 #include<ctime>
 
 using namespace std;
+
+//Wajiha Abbasi 24i-2059
+//Hanaa Sajid  24i-2029
+//PROJECT: XONIX GAME
 
 static string currentUser = "";
 
@@ -27,6 +32,31 @@ bool isUserLoggedIn(){
 
 }
 
+int getPlayerID(){
+    int IDcount =1;
+
+    ifstream f("playerIDcount.txt");
+
+    if(f.is_open()){
+        f>>IDcount;
+        f.close();
+
+    }
+    
+    int nextID=IDcount+1;
+
+    ofstream o("playerIDcount.txt");
+    if(o.is_open()){
+        o<<nextID;
+        o.close();
+
+    }
+
+    return IDcount;
+    
+}
+
+
 string hashPassword(const string& password){
     long long hash = 12;
     int l = password.length();
@@ -37,6 +67,8 @@ string hashPassword(const string& password){
 
     return to_string(hash);
 }
+
+
 
 bool isValidPassword(const string& password){
     if(password.length()< 8){
@@ -124,7 +156,7 @@ bool usernameExists(const string& username){
     return false;
 }
 
-void saveCredentials(const string& username, const string& hashedPassword){
+void saveCredentials(const string& username, const string& hashedPassword,const string& hashedSecQ){
     ofstream file("audit.txt", ios::app);
     
     time_t t = time(0);
@@ -135,14 +167,76 @@ void saveCredentials(const string& username, const string& hashedPassword){
         timeStamp.erase(timeStamp.length()-1);
     }
 
+    int playerID= getPlayerID();
+
     if(file.is_open()){
-        file<< username <<":"<< hashedPassword <<","<<timeStamp<< endl;
+        file<< username <<":"<< hashedPassword <<":"<< hashedSecQ <<":PlayerID- "<< playerID<<","<<timeStamp<< endl;
         file.close();
+
+        cout<<"Your Player ID: "<<playerID<<endl;
     } 
     
     else{
         cout<<"\nError!!!1!"<<endl;
     }
+
+}
+
+bool verifySecurityAnswer(const string& username, const string& answer){
+    ifstream file("audit.txt");
+    
+    if(!file.is_open()){
+        return false;
+    }
+    
+    string line, user, passHash, secHash;
+    string inputHash = hashString(answer);
+    
+    while(getline(file, line)){
+        user = "";
+        passHash ="";
+        secHash ="";
+        int i=0;
+        int l=line.length();
+    
+        while((i<l)&&(line[i]!=':')){
+            user += line[i];
+            i++;
+        }
+
+        if(i >= l){
+            continue;
+        }
+
+        i++;//skip colon
+        
+        //akip pass hash
+        while((i<l)&&(line[i]!=':')){
+            i++;
+        }
+
+
+        if(i>=l){
+            continue;
+        }
+
+        i++;//skip colon
+        
+        while((i<l)&& (line[i]!= ':')){
+            secHash += line[i];
+            i++;
+        }
+    
+        if((user==username)&&(secHash==inputHash)){
+            file.close();
+            return true;
+        }
+
+    }
+
+    
+    file.close();
+    return false;
 
 }
 
@@ -200,16 +294,18 @@ bool signup(){
     cout<<"\t      USER REGISTRATION"<<endl;
     cout<<"\t    ⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n"<<endl;
     
-    string username, password, confirmPassword;
+    string username, password, confirmPassword,securityAns;
     
     cout<<"Enter username: ";
     cin>>username;
     
     if(usernameExists(username)){
         cout<<"\nUsername already exists! Please choose a different username"<<endl;
-        
+        logSysActivity(username,"Registration_Attemp","FAILED-Username exits");
+       
         return false;
     }
+
     
     cout<<"\nPassword Requirements:"<<endl;
     cout<<" -At least 8 characters"<<endl;
@@ -221,7 +317,9 @@ bool signup(){
     cout<<"\nEnter password: ";
     cin>>password;
     
+
     if(!isValidPassword(password)){
+        logSysActivity(username,"Registration_Attemp","FAILED-invalid password");
         return false;
     }
     
@@ -230,23 +328,38 @@ bool signup(){
     
     if(password != confirmPassword){
         cout<<"\nPasswords do not match!" << endl;
-        
+        logSysActivity(username,"Registration_Attemp","FAILED-password mismatch");
+
         return false;
     }
     
+    cout<<"\nWhat was th name of your first grade science teacher: ";
+    cin.ignore();
+    getline(cin,securityAns);
+
+    if(securityAns.empty()){
+        cout<<"\n security ans can not be empty!!"<<endl;
+        logSysActivity(username,"Registration_Attemp","FAILED-invalid security answer");
+
+        return false;
+    }
+
     string hashedPassword = hashPassword(password);
+    string hashedAns =hashString(securityAns);
     
-    saveCredentials(username, hashedPassword);
+    saveCredentials(username,hashedPassword,hashedAns);
     
     setCurrentUser(username);
     
     cout<<"\nRegistration successful! Welcome, "<<username<<"!"<<endl;
+    logSysActivity(username,"Registration","SUCCESS");
+    
     return true;
 }
 
 bool login(){
     cout<<"\n\n\t✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦"<<endl;
-    cout<<"\t              USER LOGIN                "<<endl;
+    cout<<"\t           USER LOGIN"<<endl;
     cout<<"\t✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦\n"<<endl;
     
     string username, password;
@@ -258,6 +371,7 @@ bool login(){
     
     if(!usernameExists(username)){
         cout<<"\nUsername not found! Please sign up first"<<endl;
+        logSysActivity(username,"Login_Attempt","FAILED-user does not exist");
         
         return false;
     }
@@ -272,7 +386,9 @@ bool login(){
             setCurrentUser(username);
           
             cout<<"\nLogin successful! Welcome back, "<<username <<"!"<<endl;
+            logSysActivity(username,"Login","SUCCESS");
 
+             
             return true;
         } 
         
@@ -289,5 +405,7 @@ bool login(){
 
     
     cout<<"\nMaximum login attempts exceeded....Access denied!"<<endl;
+    logSysActivity(username,"Login_Attempt","FAILED-max attepts exceeded");
+
     return false;
 }

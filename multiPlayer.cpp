@@ -5,6 +5,10 @@
 #include <cstring>
 #include <string.h>
 
+//Wajiha Abbasi 24i-2059
+//Hanaa Sajid  24i-2029
+//PROJECT: XONIX GAME
+
 using namespace std;
 using namespace sf;
 
