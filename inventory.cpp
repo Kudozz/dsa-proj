@@ -1,5 +1,5 @@
 #include "inventory.h"
-#include "player.h"
+#include "Player.h"
 #include "authentication.h"
 #include <iostream>
 #include <fstream>

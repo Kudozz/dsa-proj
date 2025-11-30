@@ -1,7 +1,7 @@
 #ifndef MULTIPLAYER_H
 #define MULTIPLAYER_H
 #include"gameCommon.h"
-#include"player.h"
+#include"Player.h"
 #include<SFML/Graphics.hpp>
 
 //Wajiha Abbasi 24i-2059

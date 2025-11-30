@@ -2,8 +2,8 @@
 #include"authentication.h"
 #include"Player.h"
 #include<iostream>
-
-Player* currentPlayer = new Player(getCurrentUser, 14, 2, 4, 7, 3, 2);
+#include<iomanip>
+#include<cstdlib>
 
 QueueEntry::QueueEntry(Player*& player, time_t entryTime, bool isBot) {
     this->entryTime = entryTime;
@@ -11,7 +11,7 @@ QueueEntry::QueueEntry(Player*& player, time_t entryTime, bool isBot) {
     this->isBot = isBot;
 }
 
-MatchmakingQueue::MatchmakingQueue(int capacity) {
+MatchmakingQueue::MatchmakingQueue(int capacity = 10) {
     this->capacity = capacity;
     heap = new QueueEntry*[capacity];
     size = 0;
@@ -22,32 +22,32 @@ void MatchmakingQueue::heapify(int i) {
     int left = 2 * i + 1;
     int right = 2 * i + 2;
 
-    if (left < size && heap[left]->totalScore > heap[largest]->totalScore){
+    if (left < size && heap[left]->player->totalScore > heap[largest]->player->totalScore){
         largest = left;
     }
 
-    if (right < size && heap[right]->totalScore > heap[largest]->totalScore){
+    if (right < size && heap[right]->player->totalScore > heap[largest]->player->totalScore){
         largest = right;
     }
 
     if (largest != i){
         swap(heap[i], heap[largest]);
-        heapifyTemp(largest);
+        heapify(largest);
     }
 }
 
 void MatchmakingQueue::bottomUpHeapify(int i)  {//heapify UP
     int parent = (i - 1) / 2;
     if (parent >= 0)   {
-        if (arr[i]->totalScore > arr[parent]->totalScore)  {
-                swap(arr[i], arr[parent]);
+        if (heap[i]->player->totalScore > heap[parent]->player->totalScore)  {
+                swap(heap[i], heap[parent]);
                 bottomUpHeapify(parent);
             }
         }
 }
 
 void MatchmakingQueue::enqueue(Player *player, bool isBot) {
-    QueueEntry temp = new QueueEntry(player, time(0), isBot);
+    QueueEntry* temp = new QueueEntry(player, time(0), isBot);
 
     if(size<capacity) {
         size++;
@@ -58,14 +58,15 @@ void MatchmakingQueue::enqueue(Player *player, bool isBot) {
     }
 }
 Player *MatchmakingQueue::dequeue() {
-    QueueEntry temp = heap[0];
+    QueueEntry* temp = heap[0];
 
     swap(heap[0], heap[size-1]);
     size--;
     heapify(0);
 
-    return temp.player;
+    return temp->player;
 }
+
 Player *MatchmakingQueue::peek() {
     return heap[0]->player;
 }
@@ -89,6 +90,7 @@ int MatchmakingQueue::getPosition(string username) {
     }
     return -1;
 }
+
 void MatchmakingQueue::display() {
     cout << "\n\n\t\t. ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟ ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ .\n\n ݁"
          << "\n\t\t\t\t Current Queue \n\n"
@@ -96,7 +98,7 @@ void MatchmakingQueue::display() {
     
     cout << setw(10) << "Position" << setw(20) << "Username" 
          << setw(10) << "Score" << setw(15) << "Status\n";
-    cout << "----------------------------------------\n";
+    cout << "-----------------------------------------------------------------\n";
     
     string currentUser = getCurrentUser();
     
@@ -115,8 +117,8 @@ void MatchmakingQueue::display() {
              << setw(15) << "Waiting\n";
     }
     
-    cout << "========================================\n";
-    cout << "Players in queue: " << queue.getSize() << "\n";
+    cout << "=================================================================\n";
+    cout << "Players in queue: " << size << "\n";
     cout << "Minimum for match: 2\n";
     
 }
@@ -137,7 +139,6 @@ PlayerPool::PlayerPool() {
 
 
 void PlayerPool::loadFromFile() {
-    fstream playersFile;
     
 }
 
@@ -161,7 +162,9 @@ void matchmakingMenu() {
                     cout<<"\nYou are already in the queue!";
                     return;
                 } else {
-                    queue.enqueue(currentPlayer);
+                    Player* currentPlayer = loadPlayer(getCurrentUser());
+                  //  Player* player = new Player("kudoz", 2, 5, 2, 5, 2, 4, 4);
+                    queue.enqueue(currentPlayer, false);
                 }
             }
             case 2: {

@@ -1,7 +1,7 @@
 #ifndef PROFILE_H
 #define PROFILE_H
 
-#include"player.h"
+#include"Player.h"
 #include<iostream>
 #include<string>
 #include"SystemLogs.h"

@@ -1,5 +1,5 @@
 #include "profile.h"
-#include "player.h"
+#include "Player.h"
 #include "SystemLogs.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -40,7 +40,7 @@ int choice;
                 cout<<"Friend's username: ";
                 cin>>name;
 
-                rmFriend(name);
+               // rmFriend(name);
 
                 break;
                 }

@@ -7,7 +7,7 @@
 #include "profile.h"
 #include "singlePlayer.h"
 #include "multiPlayer.h"
-
+#include"matchmaking.h"
 using namespace std;
 
 
@@ -91,7 +91,6 @@ void mainMenu() {
 
             cout<<"Enter choice: ";
             cin>>choice;
-
             switch(choice){
                 case 0:{
                     return;
@@ -109,14 +108,11 @@ void mainMenu() {
                 }
 
             }
-            
+            break;
         } 
 
         case 2: {
-
             int choice;
-            
-
             cout<<"MultiPlayer Menu: ";
             cout<<"\n1.Play"
                 <<"\n0.Exit"<<endl;
@@ -127,11 +123,9 @@ void mainMenu() {
             switch(choice){
                 case 0:{
                     return;
-
                 }
-
-                case 1:{
-                    multiPlayer();
+                case 1:{   
+                    matchmakingMenu();
                     break;
                 }
 
