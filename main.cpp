@@ -11,9 +11,19 @@
 using namespace std;
 
 
+//Wajiha Abbasi 24i-2059
+//Hanaa Sajid  24i-2029
+//PROJECT: XONIX GAME
+
+
+Inventory i;
+
 void mainMenu();
 
 int main() {
+
+    initializeInventory();
+
     cout << "\n\n\t\t. ݁₊ ⊹ . ݁˖ . ݁.𖥔 ݁ ˖ ϟ ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ . ݁\t"<<endl
         <<"\n\n\t\t\t\t Welcome Gamer\n\n "<<endl
         <<"\t\t. ݁₊ ⊹ . ݁˖ . ݁.𖥔 ݁ ˖ ϟ ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ . ݁\t"<<endl;
@@ -58,7 +68,7 @@ void mainMenu() {
         <<"(1) Single Player"<<endl
         <<"(2) Multiplayer"<<endl
         <<"(3) Leaderboard"<<endl
-        <<"(4) Inventory"<<endl
+        //<<"(4) Inventory"<<endl
         <<"(5) Profile"<<endl
         <<"(6) Friends"<<endl
         <<"(0) Logout"<<endl;
@@ -83,11 +93,11 @@ void mainMenu() {
             break;
         }
         case 4: {
-            //inventory();
+            inventory();
             break;
         } 
         case 5: {
-          //  profile();
+            //profile();
             break;
         }
         case 6: {

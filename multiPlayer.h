@@ -3,6 +3,9 @@
 #include"gameCommon.h"
 #include<SFML/Graphics.hpp>
 
+//Wajiha Abbasi 24i-2059
+//Hanaa Sajid  24i-2029
+//PROJECT: XONIX GAME
 
 struct Player {
     int x, y, dx, dy; 
