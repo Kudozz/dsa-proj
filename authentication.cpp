@@ -1,5 +1,6 @@
 #include "authentication.h"
 #include"SystemLogs.h"
+#include"Player.h"
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -353,6 +354,8 @@ bool signup(){
     
     cout<<"\nRegistration successful! Welcome, "<<username<<"!"<<endl;
     logSysActivity(username,"Registration","SUCCESS");
+
+    saveNewPlayer(username);
     
     return true;
 }
@@ -388,6 +391,7 @@ bool login(){
             cout<<"\nLogin successful! Welcome back, "<<username <<"!"<<endl;
             logSysActivity(username,"Login","SUCCESS");
 
+            loadFromFile(username);
              
             return true;
         } 

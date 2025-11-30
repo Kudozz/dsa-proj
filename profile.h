@@ -1,6 +1,9 @@
-// #ifndef PROFILE_H
-// #define PROFILE_H
+#ifndef PROFILE_H
+#define PROFILE_H
+#include <string>
+using namespace std;
 
+void viewProfile(string username);
 
 // //Wajiha Abbasi 24i-2059
 // //Hanaa Sajid  24i-2029
@@ -44,4 +47,4 @@
 // struct 
 
 
-// #endif
+#endif

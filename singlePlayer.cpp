@@ -29,12 +29,6 @@ using namespace sf;
 // tile size (ts) is 18x18 
 // x/ts or y/ts is used to convert PIXEL position to GRID position
 
-struct Enemy
-{
-    int x, y, dx, dy;//x and y is position, dx and dy is speed
-
-};
-
 
 //When you complete your trail, the game calls drop() starting at each enemy's position. Any empty area reachable
 // from an enemy gets marked -1. Everything NOT marked -1 becomes captured territory!
@@ -368,10 +362,10 @@ void singlePlayer() {//main game
         window.display();
     }
     
-   string currentPlayer = getCurrentUser();
-incrementGamesPlayed(currentPlayer);
-updatePlayerPoints(currentPlayer, points);  // YOUR score variable is 'points'
-addMatchToHistory(currentPlayer, "", points, 0, "Single Player");
+    // string currentPlayer = getCurrentUser();
+    // incrementGamesPlayed(currentPlayer);
+    // updatePlayerPoints(currentPlayer, points);  // YOUR score variable is 'points'
+    // addMatchToHistory(currentPlayer, "", points, 0, "Single Player");
 
     return;
 }
