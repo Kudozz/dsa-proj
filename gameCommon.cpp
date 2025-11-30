@@ -28,15 +28,17 @@ Enemy::Enemy() {
 
 void Enemy::move() {
     x += dx;//move in x direction
-    if (grid[y / ts][x / ts] == 1)//if a solid tile is hit, reverse direction (bounce)
+    int cellValue = grid[y / ts][x / ts];
+    if (cellValue == 1 || cellValue == 4 || cellValue == 5)//if a solid tile or captured tile is hit, reverse direction (bounce)
     {
         dx = -dx; // reverse speed
         x += dx; // keep moving
     }
 
     y += dy;//move in y direction
-    if (grid[y / ts][x / ts] == 1)//solid line hit, reverse direction
-    { 
+    cellValue = grid[y / ts][x / ts];
+    if (cellValue == 1 || cellValue == 4 || cellValue == 5)//solid line or captured tile hit, reverse direction
+    {
         dy = -dy;//reverse dir
         y += dy; // keep moving
     }
