@@ -381,7 +381,7 @@ bool signup(){
     string hashedAns =hashString(securityAns);
     
     saveCredentials(username,hashedPassword,hashedAns);
-    int newID= generatePlayerID();
+    int newID= getPlayerID();
     
     createNewPlayer(username,newID);
     setCurrentUser(username);

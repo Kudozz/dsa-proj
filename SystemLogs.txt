@@ -307,3 +307,35 @@ Time: Sun Nov 30 21:43:20 2025
 User: 10407265
 Action: SUCCESS
 
+Time: Sun Nov 30 23:25:47 2025
+User: 1091786
+Action: FAILED-max attepts exceeded
+
+Time: Sun Nov 30 23:25:51 2025
+User: 1091786
+Action: FAILED-Username exits
+
+Time: Sun Nov 30 23:26:10 2025
+User: 1091786
+Action: SUCCESS
+
+Time: Sun Nov 30 23:26:23 2025
+User: 1091786
+Action: FAILED-max attepts exceeded
+
+Time: Sun Nov 30 23:26:30 2025
+User: 152
+Action: FAILED-invalid password
+
+Time: Sun Nov 30 23:26:38 2025
+User: 152
+Action: SUCCESS
+
+Time: Sun Nov 30 23:35:15 2025
+User: 152
+Action: FAILED-max attepts exceeded
+
+Time: Sun Nov 30 23:35:23 2025
+User: 154
+Action: SUCCESS
+

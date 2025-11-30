@@ -162,9 +162,9 @@ void matchmakingMenu() {
                     cout<<"\nYou are already in the queue!";
                     return;
                 } else {
-                    Player* currentPlayer = loadPlayer(getCurrentUser());
-                  //  Player* player = new Player("kudoz", 2, 5, 2, 5, 2, 4, 4);
-                    queue.enqueue(currentPlayer, false);
+                    // Player* currentPlayer = loadPlayer(getCurrentUser());
+                   Player* player = new Player("kudoz", 2, 5, 2, 5, 2, 4, 4);
+                    queue.enqueue(player, false);
                 }
             }
             case 2: {

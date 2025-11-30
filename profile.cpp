@@ -65,7 +65,7 @@ int choice;
                 break;
 
                 case 5:
-                getTotalPoints(getCurrentUser());
+                getTotalPoints();
                 break;
 
             }
