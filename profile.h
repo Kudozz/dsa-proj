@@ -12,13 +12,13 @@ using namespace std;
 //PROJECT: XONIX GAME
 
 
-
+    void profile();
     void addFriend();
     void rmFriend( string friendUser);
     void displayFriends();
     void logMatch(string username, string opponent,int myPoints, int oppPoints);
-    void displayMatchHistory(string username);
-    int getTotalPoints(string user);
+    void displayMatchHistory();
+    int getTotalPoints();
     bool userExistsInAudit(string username,int playerID);
 //     void clear();//should clear all friends..after submission
 

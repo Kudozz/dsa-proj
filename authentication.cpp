@@ -381,9 +381,17 @@ bool signup(){
     string hashedAns =hashString(securityAns);
     
     saveCredentials(username,hashedPassword,hashedAns);
+    int newID= generatePlayerID();
     
+    createNewPlayer(username,newID);
     setCurrentUser(username);
     
+    Player* player =loadPlayer(username); 
+    
+    if(player){
+        setCurrentPlayer(player);
+    }
+
     cout<<"\nRegistration successful! Welcome, "<<username<<"!"<<endl;
     logSysActivity(username,"Registration","SUCCESS");
     
@@ -417,11 +425,18 @@ bool login(){
         if(verifyPassword(username, password)){
           
             setCurrentUser(username);
+
+            Player* player= loadPlayer(username);
+
+            if(player){
+            setCurrentPlayer(player);
+        
           
             cout<<"\nLogin successful! Welcome back, "<<username <<"!"<<endl;
             logSysActivity(username,"Login","SUCCESS");
              
             return true;
+            }
         } 
         
         else{
