@@ -115,12 +115,14 @@ void mainMenu() {
         case 2: {
 
             int choice;
-            cout<<"Enter choice: ";
-            cin>>choice;
+            
 
             cout<<"MultiPlayer Menu: ";
             cout<<"\n1.Play"
                 <<"\n0.Exit"<<endl;
+
+            cout<<"Enter choice: ";
+            cin>>choice;
 
             switch(choice){
                 case 0:{
@@ -151,7 +153,7 @@ void mainMenu() {
             break;
         } 
         case 5: {
-          //  viewProfile(getCurrentUser());
+           profile();
             break;
         }
 
