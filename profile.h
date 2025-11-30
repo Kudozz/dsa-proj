@@ -1,47 +1,38 @@
-// #ifndef PROFILE_H
-// #define PROFILE_H
+#ifndef PROFILE_H
+#define PROFILE_H
 
+#include<string>
+#include<fstream>
+using namespace std;
 
-// //Wajiha Abbasi 24i-2059
-// //Hanaa Sajid  24i-2029
-// //PROJECT: XONIX GAME
-
-
-// #include <string>
-// using namespace std;
-
-// struct friendNode{
-//     string friendUser;//friend's username
-//     friendNode* next;
-
-//     friendNode(const string& username);
+// struct FriendNode {
+//     string username;
+//     string playerID;
+//     FriendNode* next;
+    
+//     FriendNode(string user, string id) : username(user), playerID(id), next(nullptr) {}
 // };
 
-// class friendList{
+
+
+// class FriendsList {
 // private:
-//     friendNode* head;
-//     int fcount;
-
-
+//     FriendNode* head;
+    
 // public:
-
-//     friendList();
-//     ~friendList();
-
-
-//     bool addFriend(const string &username);
-//     bool rmFriend(const string &username);
-//     bool isFriend(const string &username);
-//     int getTotalFriends() const;
-//     void displayFriends() const;
-//     string FriendsString() const;
-//     void loadFriends(const string& friends);
-//     void clear();
-
-
+//     FriendsList();
+//     ~FriendsList();
+//     void addFriend(string username, string playerID);
+//     void displayFriends();
+//     bool isEmpty();
 // };
 
-// struct 
 
+bool userExistsInAudit(string username, string& playerID);
+void addFriend(string currentUser);
+void displayFriends(string currentUser);
+void logMatch(string username, string opponent, int myPoints, int oppPoints);
+void displayMatchHistory(string username);
+int getTotalPoints(string username);
 
-// #endif
+#endif
