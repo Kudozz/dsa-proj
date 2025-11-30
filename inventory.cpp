@@ -1,4 +1,5 @@
 #include "inventory.h"
+#include "player.h"
 #include "authentication.h"
 #include <iostream>
 #include <fstream>
@@ -183,7 +184,11 @@ void Inventory::selectTheme(int themeID){
         currentThemeID = themeID;
         
         cout<<"\n\tTheme '"<<theme->themeName<<"' selected!"<<endl;
+        Player* player= getCurrentPlayer();
 
+        if(player){
+            player->currentThemeID =themeID;
+        }
         saveThemePreference(getCurrentUser());
 
     } 
@@ -194,7 +199,10 @@ void Inventory::selectTheme(int themeID){
 }
 
 int Inventory::getCurrentTheme(){
-    return currentThemeID;
+    Player* player= getCurrentPlayer();
+
+    
+    return ((player)?player->currentThemeID: currentThemeID);
 }
 
 void Inventory::saveThemePreference(const string& username){
@@ -493,7 +501,7 @@ void Inventory::inventoryMenu(){
             }
 
             case 4:{
-                Theme* theme = findTheme(currentThemeID);
+                Theme* theme = findTheme(getCurrentTheme());
                 
                 if(theme!=nullptr){
                     cout<<"\n\t Current Theme:"<<endl;

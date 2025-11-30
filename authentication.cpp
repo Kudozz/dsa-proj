@@ -1,4 +1,5 @@
 #include "authentication.h"
+#include"player.h"
 #include"SystemLogs.h"
 #include"Player.h"
 #include<iostream>
@@ -241,7 +242,54 @@ bool verifySecurityAnswer(const string& username, const string& answer){
 
 }
 
-//verify pass during login
+// //verify pass during login
+// bool verifyPassword(const string& username, const string& password){
+//     ifstream file("audit.txt");
+    
+//     if(!file.is_open()){
+//         return false;
+//     }
+    
+//     string line, user, hash;
+//     string inputHash = hashPassword(password);
+    
+//    while(getline(file, line)){
+//         user ="";
+//         hash ="";
+//          int i = 0;
+//          int l=line.length();
+    
+//         //read username
+//         while((i <l) && (line[i] !=':')){
+//             user += line[i];
+            
+//             i++;
+//         }
+    
+//         if(i >=l){
+//             continue; //no colon found...skip line
+//         }
+    
+//         i++; //skip the colon
+    
+//         while((i<l)&&(line[i]!=':')){
+//             hash += line[i];
+//             i++;
+//         }
+    
+//         if((user== username) && (hash == inputHash)){
+//             file.close();
+
+//             return true;
+//         }
+
+//     }
+
+    
+//     file.close();
+//     return false;
+// }
+
 bool verifyPassword(const string& username, const string& password){
     ifstream file("audit.txt");
     
@@ -249,41 +297,25 @@ bool verifyPassword(const string& username, const string& password){
         return false;
     }
     
-    string line, user, hash;
+    string line;
     string inputHash = hashPassword(password);
     
-   while(getline(file, line)){
-        user ="";
-        hash ="";
-         int i = 0;
-         int l=line.length();
-    
-        //read username
-        while((i <l) && (line[i] !=':')){
-            user += line[i];
-            
-            i++;
-        }
-    
-        if(i >=l){
-            continue; //no colon found...skip line
-        }
-    
-        i++; //skip the colon
-    
-        while((i<l)&&(line[i]!=' ')&&(line[i]!=',')){
-            hash += line[i];
-            i++;
-        }
-    
-        if((user== username) && (hash == inputHash)){
+    while(getline(file, line)){
+        int firstCol = line.find(':');
+        if(firstCol == string::npos) continue;
+        
+        string user = line.substr(0,firstCol);
+        
+        int secondCol = line.find(':',(firstCol+1));
+        if(secondCol == string::npos) continue;
+        
+        string hash = line.substr((firstCol+1),(secondCol-firstCol-1));
+        
+        if((user==username)&&(hash == inputHash)){
             file.close();
-
             return true;
         }
-
     }
-
     
     file.close();
     return false;

@@ -1,50 +1,27 @@
 #ifndef PROFILE_H
 #define PROFILE_H
-#include <string>
+
+#include"player.h"
+#include<iostream>
+#include<string>
 using namespace std;
 
-// void viewProfile(string username);
 
-// //Wajiha Abbasi 24i-2059
-// //Hanaa Sajid  24i-2029
-// //PROJECT: XONIX GAME
-
-
-// #include <string>
-// using namespace std;
-
-// struct friendNode{
-//     string friendUser;//friend's username
-//     friendNode* next;
-
-//     friendNode(const string& username);
-// };
-
-// class friendList{
-// private:
-//     friendNode* head;
-//     int fcount;
+//Wajiha Abbasi 24i-2059
+//Hanaa Sajid  24i-2029
+//PROJECT: XONIX GAME
 
 
-// public:
 
-//     friendList();
-//     ~friendList();
-
-
-//     bool addFriend(const string &username);
-//     bool rmFriend(const string &username);
-//     bool isFriend(const string &username);
-//     int getTotalFriends() const;
-//     void displayFriends() const;
-//     string FriendsString() const;
-//     void loadFriends(const string& friends);
-//     void clear();
+    void addFriend();
+    void rmFriend( string friendUser);
+    void displayFriends();
+    void logMatch(string username, string opponent,int myPoints, int oppPoints);
+    void displayMatchHistory(string username);
+    int getTotalPoints(string user);
+    bool userExistsInAudit(string username,int playerID);
+//     void clear();//should clear all friends..after submission
 
 
-// };
 
-// struct 
-
-
-#endif
+ #endif

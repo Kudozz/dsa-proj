@@ -1,17 +1,18 @@
 #ifndef MULTIPLAYER_H
 #define MULTIPLAYER_H
 #include"gameCommon.h"
+#include"player.h"
 #include<SFML/Graphics.hpp>
 
 //Wajiha Abbasi 24i-2059
 //Hanaa Sajid  24i-2029
 //PROJECT: XONIX GAME
 
-struct Player {
+struct GPlayer {
     int x, y, dx, dy; 
     int points, threshold, multiplier, rewardCounter, powerups;
     bool alive;
-    Player(int x, int y);
+    GPlayer(int x, int y);
     void reset();
     void clamp();
     void die();
@@ -24,8 +25,8 @@ void drop(int y, int x);
 // Game mode
 void multiPlayer();
 
-void handleCapture(Player &player, Enemy a[], int enemyCount, int ownCaptured);
-void updatePlayerMovement(Player &Player, int ownTrail, int oppTrail);
+void handleCaptureG(Player &player, Enemy a[], int enemyCount, int ownCaptured);
+void updatePlayerMovement(GPlayer &Player, int ownTrail, int oppTrail);
 
 // void checkEnemyCollision(Player& player, int trail, Enemy a[], int enemyCount);
 // void checkPlayerCollision(Player &player1, Player &player2);

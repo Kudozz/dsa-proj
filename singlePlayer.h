@@ -8,17 +8,6 @@
 //PROJECT: XONIX GAME
 
 
-
-// Grid dimensions
-
-// Global grid
-extern int grid[M][N];
-
-// Tile size
-extern int ts;
-
-// Enemy object
-
 // Flood fill function for capturing area
 void drop(int y, int x);
 

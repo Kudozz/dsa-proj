@@ -30,7 +30,7 @@ using namespace sf;
 //  x/ts or y/ts is used to convert PIXEL position to GRID position
 
 
-Player::Player(int x, int y) {
+GPlayer::GPlayer(int x, int y) {
     this->x = x;
     this->y = y;
     dx = 0;
@@ -43,7 +43,7 @@ Player::Player(int x, int y) {
     rewardCounter = 0;
 }
 
-void Player::reset() {
+void GPlayer::reset() {
     points = 0;
     alive = true;
     multiplier =2;
@@ -51,15 +51,15 @@ void Player::reset() {
     rewardCounter = 0;
 }
 
-void Player::die() {
+void GPlayer::die() {
     alive = false;
 }
 
-bool Player::isMoving() {
+bool GPlayer::isMoving() {
     if(dx !=0 || dy != 0) return true;
     else return false;
 }
-void Player::clamp() {
+void GPlayer::clamp() {
     if (x < 0)
         x = 0;
     if (x > N - 1)
@@ -73,7 +73,7 @@ void Player::clamp() {
 // When you complete your trail, the game calls drop() starting at each enemy's position. Any empty area reachable
 // from an enemy gets marked -1. Everything NOT marked -1 becomes captured territory!
 
-void updatePlayerMovement(Player &player, int ownTrail, int oppTrail){
+void updatePlayerMovement(GPlayer &player, int ownTrail, int oppTrail){
     player.x += player.dx;
     player.y += player.dy;
 
@@ -93,7 +93,7 @@ void updatePlayerMovement(Player &player, int ownTrail, int oppTrail){
         grid[player.y][player.x] = ownTrail;
 }
 
-void handleCapture(Player &player, Enemy a[], int enemyCount, int ownCaptured) {
+void handleCapture(GPlayer &player, Enemy a[], int enemyCount, int ownCaptured) {
         // if player reached solid territory - successfully captured
         player.dx = player.dy = 0; // stop moving
 
@@ -209,7 +209,7 @@ void multiPlayer(){ // main game
     sGameover.setPosition(100, 100); // game over is displayed at the center of the screen
     sEnemy.setOrigin(20, 20);        // center of rotation of enemy
 
-    Player player1(0, 10), player2(N - 1, 10);
+    GPlayer player1(0, 10), player2(N - 1, 10);
     int enemyCount = 4;
     Enemy a[10]; // there can be upto 10 enemies, we are using 4
 
@@ -490,39 +490,6 @@ void multiPlayer(){ // main game
 
         window.display();
     }
-
-
-     // Update both players' profiles after game ends
-    // string username1 = getCurrentUser();
-    
-    // // Get Player 2 username (you'll need to get this somehow)
-    // // For now, let's add a simple input:
-    // string username2;
-    // cout << "\nEnter Player 2 username for profile update: ";
-    // cin >> username2;
-    
-    // // Verify Player 2 exists
-    // if (profileExists(username2)) {
-    //     // Update Player 1
-    //     incrementGamesPlayed(username1);
-    //     updatePlayerPoints(username1, player1.points);
-    //     addMatchToHistory(username1, username2, player1.points, player2.points, "Multiplayer");
-        
-    //     // Update Player 2
-    //     incrementGamesPlayed(username2);
-    //     updatePlayerPoints(username2, player2.points);
-    //     addMatchToHistory(username2, username1, player2.points, player1.points, "Multiplayer");
-        
-    //     cout << "\n✅ Both players' profiles updated!" << endl;
-    // } else {
-    //     // Only update Player 1
-    //     incrementGamesPlayed(username1);
-    //     updatePlayerPoints(username1, player1.points);
-    //     addMatchToHistory(username1, "Player2", player1.points, player2.points, "Multiplayer");
-        
-    //     cout << "\n✅ Player 1 profile updated!" << endl;
-    //     cout << "⚠️ Player 2 not registered, profile not updated." << endl;
-    // }
 
     return;
 }

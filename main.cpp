@@ -20,6 +20,8 @@ Inventory i;
 
 void mainMenu();
 
+string user = getCurrentUser(); 
+
 int main() {
 
     initializeInventory();
@@ -69,8 +71,8 @@ void mainMenu() {
         <<"(2) Multiplayer"<<endl
         <<"(3) Leaderboard"<<endl
         <<"(4) Inventory"<<endl
-        <<"(5) Profile"<<endl
-        <<"(6) Friends"<<endl
+         <<"(5) Profile"<<endl
+         <<"(6) Friends"<<endl
         <<"(0) Logout"<<endl;
 
     int op;
@@ -80,14 +82,66 @@ void mainMenu() {
         case 0: {
             return;
         }
-        case 1: {
-            singlePlayer();
-            break;
+        case 1:{
+            int choice;
+
+            cout<<"Single Player Menu: ";
+            cout<<"\n1.Play"
+                <<"\n0.Exit"<<endl;
+
+            cout<<"Enter choice: ";
+            cin>>choice;
+
+            switch(choice){
+                case 0:{
+                    return;
+
+                }
+
+                case 1:{
+                    singlePlayer();
+                    break;
+                }
+
+                default:{
+                    cout<<"Invalid choice"<<endl;
+                    break;
+                }
+
+            }
+            
         } 
+
         case 2: {
-            multiPlayer();
+
+            int choice;
+            cout<<"Enter choice: ";
+            cin>>choice;
+
+            cout<<"MultiPlayer Menu: ";
+            cout<<"\n1.Play"
+                <<"\n0.Exit"<<endl;
+
+            switch(choice){
+                case 0:{
+                    return;
+
+                }
+
+                case 1:{
+                    multiPlayer();
+                    break;
+                }
+
+                default:{
+                    cout<<"Invalid choice"<<endl;
+                    break;
+                }
+
+            }
             break;
         }
+
         case 3: {
             leaderboard();
             break;
@@ -100,6 +154,7 @@ void mainMenu() {
           //  viewProfile(getCurrentUser());
             break;
         }
+
         case 6: {
          //   friends();
             break;
