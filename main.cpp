@@ -153,7 +153,7 @@ void mainMenu() {
             break;
         } 
         case 5: {
-           profile();
+        //   profile();
             break;
         }
 

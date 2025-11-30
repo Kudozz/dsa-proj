@@ -5,7 +5,7 @@
 #include<fstream>
 using namespace std;
 
-
+#include"SystemLogs.h"
 
 struct FriendNode{
     string username;
@@ -94,6 +94,10 @@ struct Player{
         prev = current;
         current = current->next;
     }
+
+    cout<<"Friend does not exist"<<endl;
+    logSysActivity(username,"Remove friend attempt","FAILED-friend does not exist");
+    
 }
 
     bool isFriend(string friendUsername) {

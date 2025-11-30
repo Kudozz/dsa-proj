@@ -1,16 +1,16 @@
-#include"Player.h"
+#include"player.h"
 
-Player::Player(string username, int id, int totalScore, int matchCount, int wins, int losses, int draws, int currentThemeID) {
-    this->username = username;
-    this->playerID = id;
-    this->totalScore =totalScore;
-    this->matchCount = matchCount;
-    this->wins = wins;
-    this->losses = losses;
-    this->draws = draws;
-    this->currentThemeID = currentThemeID;
-    friends = nullptr;
-}
+// Player::Player(string username, int id, int totalScore, int matchCount, int wins, int losses, int draws, int currentThemeID) {
+//     this->username = username;
+//     this->playerID = id;
+//     this->totalScore =totalScore;
+//     this->matchCount = matchCount;
+//     this->wins = wins;
+//     this->losses = losses;
+//     this->draws = draws;
+//     this->currentThemeID = currentThemeID;
+//     friends = nullptr;
+// }
 
 // void saveNewPlayer(string username) {
 //     Player temp(username);

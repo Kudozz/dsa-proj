@@ -4,6 +4,7 @@
 #include"player.h"
 #include<iostream>
 #include<string>
+#include"SystemLogs.h"
 using namespace std;
 
 

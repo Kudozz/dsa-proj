@@ -5,10 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
+#include"authentication.h"
 using namespace std;
-
-
 
 //Wajiha Abbasi 24i-2059
 //Hanaa Sajid  24i-2029
@@ -48,7 +46,7 @@ int choice;
                 }
 
                 case 3:
-                displayMatchHistory(u);
+                displayMatchHistory(getCurrentUser());
 
                 break;
 
@@ -57,7 +55,7 @@ int choice;
                 break;
 
                 case 5:
-                getTotalPoints();
+                getTotalPoints(getCurrentUser());
                 break;
 
             }

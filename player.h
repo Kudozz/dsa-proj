@@ -5,7 +5,7 @@
 #include<fstream>
 using namespace std;
 
-
+#include"SystemLogs.h"
 
 struct FriendNode{
     string username;
