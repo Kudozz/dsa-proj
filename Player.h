@@ -10,8 +10,13 @@ using namespace std;
 // Hanaa Sajid  24i-2029
 // PROJECT: XONIX GAME
 
-struct FriendNode
-{
+
+//Wajiha Abbasi 24i-2059
+//Hanaa Sajid  24i-2029
+//PROJECT: XONIX GAME
+
+
+struct FriendNode{
     string username;
     int playerID;
     FriendNode *next;

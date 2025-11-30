@@ -13,6 +13,7 @@ using namespace std;
 //PROJECT: XONIX GAME
 
 void profile(){
+   
 
 int choice;
 
@@ -40,13 +41,22 @@ int choice;
                 cout<<"Friend's username: ";
                 cin>>name;
 
-               // rmFriend(name);
+                 Player* player= getCurrentPlayer();
+
+                if(player){
+                    player->rmFriend(name);
+
+                }
+
+                else{
+                    cout<<"no player loaded!!!"<<endl;
+                }
 
                 break;
                 }
 
                 case 3:
-                displayMatchHistory(getCurrentUser());
+                displayMatchHistory();
 
                 break;
 
@@ -237,7 +247,7 @@ void logMatch(string username, string opponent,int myPoints, int oppPoints){
 }
 
 //displays match history by reading user's matches file
-void displayMatchHistory(string username){
+void displayMatchHistory(){
     Player* player=getCurrentPlayer();
 
      if(!player){
@@ -283,7 +293,7 @@ void displayMatchHistory(string username){
 }
 
 //total points calculated by reading user's points from their matches file
-int getTotalPoints(string user){
+int getTotalPoints(){
 
     Player* player=getCurrentPlayer();
 
