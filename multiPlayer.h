@@ -27,10 +27,10 @@ void multiPlayer();
 void handleCapture(Player &player, Enemy a[], int enemyCount, int ownCaptured);
 void updatePlayerMovement(Player &Player, int ownTrail, int oppTrail);
 
-void checkEnemyCollision(Player& player, int trail, Enemy a[], int enemyCount);
-void checkPlayerCollision(Player &player1, Player &player2);
+// void checkEnemyCollision(Player& player, int trail, Enemy a[], int enemyCount);
+// void checkPlayerCollision(Player &player1, Player &player2);
 
-bool isPlayerConstructing(Player& player);
+// bool isPlayerConstructing(Player& player);
 
 
 #endif
