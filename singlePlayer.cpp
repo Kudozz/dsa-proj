@@ -362,12 +362,7 @@ void singlePlayer() {//main game
         
         window.display();
     }
-    
-   string currentPlayer = getCurrentUser();
-incrementGamesPlayed(currentPlayer);
-updatePlayerPoints(currentPlayer, points);  // YOUR score variable is 'points'
-addMatchToHistory(currentPlayer, "", points, 0, "Single Player");
-
+   
     return;
 }
 
