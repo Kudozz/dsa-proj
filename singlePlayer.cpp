@@ -14,12 +14,6 @@ using namespace sf;
 //Hanaa Sajid  24i-2029
 //PROJECT: XONIX GAME
 
-const int M = 25;
-const int N = 40;
-
-int grid[M][N] = {0};
-int ts = 18;
-
 // 1 marks borders/captured tiles
 // 0 marks empty space
 // -1 marks areas reachable by enemies
@@ -29,12 +23,6 @@ int ts = 18;
 // player moves in TILE coordinates 
 // tile size (ts) is 18x18 
 // x/ts or y/ts is used to convert PIXEL position to GRID position
-
-struct Enemy
-{
-    int x, y, dx, dy;//x and y is position, dx and dy is speed
-
-};
 
 
 //When you complete your trail, the game calls drop() starting at each enemy's position. Any empty area reachable

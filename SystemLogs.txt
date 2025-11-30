@@ -9,3 +9,63 @@ Action: FAILED-user does not exist
 Time: Sun Nov 30 12:05:42 2025
 User: 10407265
 Action: SUCCESS
+Time: Sun Nov 30 13:50:41 2025
+User: 1091786
+Action: FAILED-user does not exist
+
+Time: Sun Nov 30 13:50:56 2025
+User: 1091786
+Action: SUCCESS
+
+Time: Sun Nov 30 13:54:54 2025
+User: 1091786
+Action: FAILED-Username exits
+
+Time: Sun Nov 30 13:54:56 2025
+User: 152
+Action: FAILED-user does not exist
+
+Time: Sun Nov 30 13:55:05 2025
+User: 152
+Action: SUCCESS
+
+Time: Sun Nov 30 13:58:21 2025
+User: 152
+Action: FAILED-Username exits
+
+Time: Sun Nov 30 13:58:23 2025
+User: 149
+Action: FAILED-user does not exist
+
+Time: Sun Nov 30 13:58:31 2025
+User: 149
+Action: SUCCESS
+
+Time: Sun Nov 30 14:04:13 2025
+User: 1091786
+Action: FAILED-max attepts exceeded
+
+Time: Sun Nov 30 14:04:17 2025
+User: 93
+Action: FAILED-user does not exist
+
+Time: Sun Nov 30 14:04:21 2025
+User: 152
+Action: FAILED-Username exits
+
+Time: Sun Nov 30 14:04:31 2025
+User: 155
+Action: SUCCESS
+
+Time: Sun Nov 30 14:08:03 2025
+User: 155
+Action: FAILED-Username exits
+
+Time: Sun Nov 30 14:08:05 2025
+User: 165
+Action: FAILED-user does not exist
+
+Time: Sun Nov 30 14:08:14 2025
+User: 94
+Action: SUCCESS
+

@@ -4,6 +4,7 @@
 #include <string>
 #include <cstring>
 #include <string.h>
+#include<iostream>
 
 //Wajiha Abbasi 24i-2059
 //Hanaa Sajid  24i-2029
@@ -99,7 +100,7 @@ void handleCapture(Player &player, Enemy a[], int enemyCount, int ownCaptured) {
         // Determine own trail value based on captured value
         // If ownCaptured is 5 (player 1), ownTrail is 3
         // If ownCaptured is 4 (player 2), ownTrail is 2
-        int ownTrail = (ownCaptured == 5) ? 3 : 2;
+        int ownTrail = ((ownCaptured == 5) ? 3 : 2);
 
         for (int i = 0; i < M; i++)  {
             for (int j = 0; j < N; j++)
@@ -159,6 +160,8 @@ void handleCapture(Player &player, Enemy a[], int enemyCount, int ownCaptured) {
             player.powerups += newMilestones;
         }
 
+        cout << "Capture called for player at (" << player.x << "," << player.y << ") with ownCaptured=" << ownCaptured << " and ownTrail=" << ownTrail << endl;
+        cout << "Old tiles: " << oldTileCount << ", New tiles: " << newTileCount << ", Points awarded: " << newPts << endl;
 }
 
 bool isGridFull() {
@@ -319,10 +322,11 @@ void multiPlayer(){ // main game
 
         if (timer > delay){
             if(player1.alive && !freeze[1]) {
+                bool hadTrail = (player1.dx != 0 || player1.dy != 0);
                 updatePlayerMovement(player1, 3, 2);
 
                 // Handle capture immediately after movement while not frozen
-                if((grid[player1.y][player1.x] == 1) || (grid[player1.y][player1.x] == 5))
+                if(hadTrail && ((grid[player1.y][player1.x] == 1) || (grid[player1.y][player1.x] == 5)))
                     handleCapture(player1, a, enemyCount, 5);
             }
 
@@ -331,10 +335,11 @@ void multiPlayer(){ // main game
             }
 
             if(player2.alive && !freeze[0]) {
+                bool hadTrail = (player2.dx != 0 || player2.dy != 0);
                 updatePlayerMovement(player2, 2, 3);
 
                 // Handle capture immediately after movement while not frozen
-                if((grid[player2.y][player2.x] == 1) || (grid[player2.y][player2.x] == 4))
+                if(hadTrail && ((grid[player2.y][player2.x] == 1) || (grid[player2.y][player2.x] == 4)))
                     handleCapture(player2, a, enemyCount, 4);
             }
 
@@ -427,7 +432,7 @@ void multiPlayer(){ // main game
                 if (grid[i][j] == 4)
                     sTile.setTextureRect(IntRect(90, 0, ts, ts)); // captured p2
                 if (grid[i][j] == 5)
-                    sTile.setTextureRect(IntRect(108, 0, ts, ts)); // captured p1
+                    sTile.setTextureRect(IntRect(72, 0, ts, ts)); // captured p1
                 // IntRect(0, 0, ts, ts) means: start at pixel (0,0) in the image, grab an 18×18 area
 
                 // actually drawing
