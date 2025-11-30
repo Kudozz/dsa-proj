@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
-#include "inventory.h"
-#include "authentication.h"
+#include"inventory.h"
+#include"profile.h"
+#include"authentication.h"
 #include<string>
 #include<cstring>
 #include<string.h>
@@ -14,6 +15,10 @@ using namespace sf;
 //Hanaa Sajid  24i-2029
 //PROJECT: XONIX GAME
 
+
+
+
+
 // 1 marks borders/captured tiles
 // 0 marks empty space
 // -1 marks areas reachable by enemies
@@ -23,6 +28,12 @@ using namespace sf;
 // player moves in TILE coordinates 
 // tile size (ts) is 18x18 
 // x/ts or y/ts is used to convert PIXEL position to GRID position
+
+struct Enemy
+{
+    int x, y, dx, dy;//x and y is position, dx and dy is speed
+
+};
 
 
 //When you complete your trail, the game calls drop() starting at each enemy's position. Any empty area reachable
@@ -356,6 +367,12 @@ void singlePlayer() {//main game
         
         window.display();
     }
+    
+   string currentPlayer = getCurrentUser();
+incrementGamesPlayed(currentPlayer);
+updatePlayerPoints(currentPlayer, points);  // YOUR score variable is 'points'
+addMatchToHistory(currentPlayer, "", points, 0, "Single Player");
 
     return;
 }
+

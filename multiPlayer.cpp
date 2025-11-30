@@ -1,5 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "multiPlayer.h"
+#include "profile.h"
+#include "authentication.h"
+#include <iostream>
 #include <time.h>
 #include <string>
 #include <cstring>
@@ -484,10 +487,43 @@ void multiPlayer(){ // main game
         window.draw(scoreText1);
 
         window.draw(scoreText2);
-    
 
         window.display();
     }
 
+
+     // Update both players' profiles after game ends
+    string username1 = getCurrentUser();
+    
+    // Get Player 2 username (you'll need to get this somehow)
+    // For now, let's add a simple input:
+    string username2;
+    cout << "\nEnter Player 2 username for profile update: ";
+    cin >> username2;
+    
+    // Verify Player 2 exists
+    if (profileExists(username2)) {
+        // Update Player 1
+        incrementGamesPlayed(username1);
+        updatePlayerPoints(username1, player1.points);
+        addMatchToHistory(username1, username2, player1.points, player2.points, "Multiplayer");
+        
+        // Update Player 2
+        incrementGamesPlayed(username2);
+        updatePlayerPoints(username2, player2.points);
+        addMatchToHistory(username2, username1, player2.points, player1.points, "Multiplayer");
+        
+        cout << "\n✅ Both players' profiles updated!" << endl;
+    } else {
+        // Only update Player 1
+        incrementGamesPlayed(username1);
+        updatePlayerPoints(username1, player1.points);
+        addMatchToHistory(username1, "Player2", player1.points, player2.points, "Multiplayer");
+        
+        cout << "\n✅ Player 1 profile updated!" << endl;
+        cout << "⚠️ Player 2 not registered, profile not updated." << endl;
+    }
+
     return;
 }
+
