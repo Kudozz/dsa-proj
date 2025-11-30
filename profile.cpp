@@ -14,7 +14,57 @@ using namespace std;
 //Hanaa Sajid  24i-2029
 //PROJECT: XONIX GAME
 
+void profile(){
 
+int choice;
+
+            cout<<"\n ⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨ Profile Menu ୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n"
+            <<"1. Add friend\n"
+            <<"2. Remove friend\n"
+            <<"3. Display match history\n "
+            <<"4. View friends\n"
+            <<"5. Total points\n"
+            <<"0. Exit\n"
+            <<"Enter choice: ";
+            cin>>choice;
+
+            switch(choice){
+                case 0:
+                return;
+
+                case 1:
+                addFriend();
+                break;
+
+                case 2:{
+                cout<<endl;
+                string name;
+                cout<<"Friend's username: ";
+                cin>>name;
+
+                rmFriend(name);
+
+                break;
+                }
+
+                case 3:
+                displayMatchHistory(u);
+
+                break;
+
+                case 4:
+                displayFriends();
+                break;
+
+                case 5:
+                getTotalPoints();
+                break;
+
+            }
+
+            cout<<"\t\t\t ⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ "<<endl;
+
+}
 
 //DOES THE USER EXIST IIN AUDIT.TXT HUHHH??? DOES IT ??? DOES IT NOWWW???HUHHHHHHHHH??
 bool userExistsInAudit(string username,int playerID){

@@ -97,7 +97,34 @@ void singlePlayer() {//main game
     //bg color(if there iis no background image)
     Color backgroundColor(themeColors.r_background,themeColors.g_background,themeColors.b_background);
 
-    int enemyCount = 4;
+    int enemyCount;
+    int mode=0;
+
+    cout<<"\n\nSelect difficulty: "
+    <<"\n1. Easy"
+    <<"\n2. normal"
+    <<"\n3. Hard"
+    <<"\n0.exit"
+    <<"\nEnter mode choice: ";
+    cin>>mode;
+    cout<<endl;
+
+    if(mode==0){
+        return;   //will take back to 
+    }
+
+    else if(mode==2){
+        enemyCount=6;
+    }
+
+    else if(mode==3){
+        enemyCount=8;
+    }
+
+    else{
+        enemyCount=4; //easy mode is default mode
+    }
+
     Enemy a[10];//there can be upto 10 enemies, we are using 4
 
     bool freeze= false;
