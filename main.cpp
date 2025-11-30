@@ -68,7 +68,7 @@ void mainMenu() {
         <<"(1) Single Player"<<endl
         <<"(2) Multiplayer"<<endl
         <<"(3) Leaderboard"<<endl
-        //<<"(4) Inventory"<<endl
+        <<"(4) Inventory"<<endl
         <<"(5) Profile"<<endl
         <<"(6) Friends"<<endl
         <<"(0) Logout"<<endl;
@@ -89,7 +89,7 @@ void mainMenu() {
             break;
         }
         case 3: {
-          //  leaderboard();
+            leaderboard();
             break;
         }
         case 4: {
@@ -97,7 +97,7 @@ void mainMenu() {
             break;
         } 
         case 5: {
-            viewProfile(getCurrentUser());
+          //  viewProfile(getCurrentUser());
             break;
         }
         case 6: {

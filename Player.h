@@ -7,17 +7,17 @@ using namespace std;
 
 struct Player {
     string username;
-    int points;
-    int matchesPlayed; 
+    int playerID;
+    int totalScore;
+    int matchCount; 
     int wins;
     int losses;
+    int draws;
+    int currentThemeID;
+
     Player* friends;
 
-    Player(string username);
+    Player(string username, int id, int totalScore, int matchCount, int wins, int losses, int draws, int currentThemeID);
 };
-
-Player* loadFromFile(string username);
-
-void saveNewPlayer(string username);
 
 #endif

@@ -7,6 +7,7 @@
 #include<cstring>
 #include<string.h>
 #include"singlePlayer.h"
+#include"Player.h"
 
 using namespace std;
 using namespace sf;
@@ -361,6 +362,8 @@ void singlePlayer() {//main game
         
         window.display();
     }
+
+    
     
     // string currentPlayer = getCurrentUser();
     // incrementGamesPlayed(currentPlayer);

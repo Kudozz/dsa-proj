@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-void viewProfile(string username);
+// void viewProfile(string username);
 
 // //Wajiha Abbasi 24i-2059
 // //Hanaa Sajid  24i-2029
