@@ -2,6 +2,7 @@
 #define MATCHMAKING_H
 #include<ctime>
 #include"Player.h"
+#include"playerPool.h"
 
 struct QueueEntry {
     Player* player; 
@@ -9,19 +10,6 @@ struct QueueEntry {
     bool isBot;
 
     QueueEntry(Player*&, time_t, bool);
-};
-
-
-class PlayerPool {
-    Player** players;
-    int size; 
-    bool* inQueue; 
-    int capacity;
-public: 
-    PlayerPool();
-    void loadFromFile(); 
-    Player* getRandomPlayer();
-   // void markInQueue(string username, bool status);
 };
 
 class MatchmakingQueue {
