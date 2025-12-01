@@ -11,13 +11,27 @@ struct QueueEntry {
     QueueEntry(Player*&, time_t, bool);
 };
 
+
+class PlayerPool {
+    Player** players;
+    int size; 
+    bool* inQueue; 
+    int capacity;
+public: 
+    PlayerPool();
+    void loadFromFile(); 
+    Player* getRandomPlayer();
+   // void markInQueue(string username, bool status);
+};
+
 class MatchmakingQueue {
     private:
         QueueEntry** heap;
         int capacity;
         int size;
+        PlayerPool* playerPool;
     public: 
-        MatchmakingQueue(int);
+        MatchmakingQueue(int=10);
         void enqueue(Player* player, bool isBot);
         Player* dequeue();
         Player* peek(); 
@@ -28,20 +42,8 @@ class MatchmakingQueue {
         bool contains(string username);
         void heapify(int);
         void bottomUpHeapify(int);
-};
-
-
-
-class PlayerPool {
-    Player** players;
-    int count; 
-    bool inQueue; 
-    int size;
-public: 
-    PlayerPool();
-    void loadFromFile(); 
-    Player* getRandomPlayer();
-    void markInQueue(string username, bool status);
+        void waitInQueue(Player*);
+        void matchPlayers();
 };
 
 void matchmakingMenu();

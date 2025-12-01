@@ -125,7 +125,7 @@ void mainMenu() {
                     return;
                 }
                 case 1:{   
-                    multiPlayer();
+                    matchmakingMenu();
                     break;
                 }
 
