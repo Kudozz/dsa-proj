@@ -7,7 +7,9 @@
 #include <string>
 #include <cstring>
 #include <string.h>
+#include<iomanip>
 #include<iostream>
+#include<cmath>
 
 //Wajiha Abbasi 24i-2059
 //Hanaa Sajid  24i-2029
@@ -189,6 +191,9 @@ void multiPlayer(){ // main game
     Font font;
     font.loadFromFile("Guntech.otf");
 
+    Clock countdownClock;
+    Time totalCountdownTime = seconds(60.0f);
+
     Text deadtext;
     deadtext.setFont(font);
     deadtext.setCharacterSize(25);
@@ -196,7 +201,7 @@ void multiPlayer(){ // main game
     deadtext.setPosition(200.f, 450.f);
 
     // draw grid
-    RenderWindow window(VideoMode(N * ts, M * ts + 80), "Xonix Game!");
+    RenderWindow window(VideoMode(N * ts, M * ts + 100), "Xonix Game!");
     window.setFramerateLimit(60);
     window.setMouseCursorVisible(true);
 
@@ -254,6 +259,8 @@ void multiPlayer(){ // main game
                     player2.y = 10;
                     player1.points = 0;
                     player2.points = 0;
+
+                    countdownClock.restart();
 
                     clearGrid();
                     Game = true; // restaet game
@@ -320,6 +327,7 @@ void multiPlayer(){ // main game
             }
         }
 
+
         if (!Game)
             continue;
 
@@ -381,6 +389,13 @@ void multiPlayer(){ // main game
             timer = 0;
         }
 
+        Time elapsed = countdownClock.getElapsedTime();
+        Time remainingTime = totalCountdownTime - elapsed;
+
+        
+        if (remainingTime.asSeconds() <= 0.0f)
+        { Game = false;}
+
         if (!freeze[0] && !freeze[1])
             for (int i = 0; i < enemyCount; i++) // move enemies stores in array a
                 a[i].move();
@@ -403,6 +418,14 @@ void multiPlayer(){ // main game
             Game = false; 
         }
 
+        int secondsLeft = (int)round(remainingTime.asSeconds());
+
+        Text timeText;
+        timeText.setFont(font);
+        timeText.setCharacterSize(25);
+        timeText.setFillColor(Color::White);
+        timeText.setPosition(300.f, 500.f);
+        timeText.setString(to_string(secondsLeft));
 
         Text scoreText1;
         scoreText1.setFont(font);
@@ -487,6 +510,7 @@ void multiPlayer(){ // main game
         window.draw(scoreText1);
 
         window.draw(scoreText2);
+        window.draw(timeText);
 
         window.display();
     }

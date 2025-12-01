@@ -55,6 +55,7 @@ Player* loadPlayer(const string& user){
     string filename ="profiles/"+user +".txt";
     ifstream file;
 
+
     file.open(filename);
     
     if(!file.is_open()){

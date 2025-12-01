@@ -339,3 +339,95 @@ Time: Sun Nov 30 23:35:23 2025
 User: 154
 Action: SUCCESS
 
+Time: Sun Nov 30 23:57:42 2025
+User: 157
+Action: SUCCESS
+
+Time: Sun Nov 30 23:58:59 2025
+User: 153
+Action: FAILED-invalid password
+
+Time: Sun Nov 30 23:59:08 2025
+User: 153
+Action: SUCCESS
+
+Time: Mon Dec  1 00:01:31 2025
+User: 144
+Action: SUCCESS
+
+Time: Mon Dec  1 11:50:12 2025
+User: 1058182
+Action: FAILED-user does not exist
+
+Time: Mon Dec  1 11:50:20 2025
+User: 1058182
+Action: SUCCESS
+
+Time: Mon Dec  1 11:50:41 2025
+User: 1058182
+Action: FAILED-max attepts exceeded
+
+Time: Mon Dec  1 11:51:29 2025
+User: 12863
+Action: SUCCESS
+
+Time: Mon Dec  1 11:51:29 2025
+User: 5
+Action: SUCCESS
+
+Time: Mon Dec  1 11:51:29 2025
+User: 12863
+Action: SUCCESS
+
+Time: Mon Dec  1 11:51:39 2025
+User: 5
+Action: SUCCESS
+
+Time: Mon Dec  1 11:51:39 2025
+User: 12863
+Action: SUCCESS
+
+Time: Mon Dec  1 12:08:18 2025
+User: 1091786
+Action: SUCCESS
+
+Time: Mon Dec  1 12:08:18 2025
+User: 5
+Action: SUCCESS
+
+Time: Mon Dec  1 12:08:18 2025
+User: 1091786
+Action: SUCCESS
+
+Time: Mon Dec  1 12:18:36 2025
+User: 5
+Action: SUCCESS
+
+Time: Mon Dec  1 12:18:36 2025
+User: 1091786
+Action: SUCCESS
+
+Time: Mon Dec  1 12:20:24 2025
+User: 5
+Action: SUCCESS
+
+Time: Mon Dec  1 12:20:24 2025
+User: 1091786
+Action: SUCCESS
+
+Time: Mon Dec  1 12:26:58 2025
+User: 5
+Action: SUCCESS
+
+Time: Mon Dec  1 12:26:58 2025
+User: 1091786
+Action: SUCCESS
+
+Time: Mon Dec  1 12:33:26 2025
+User: 5
+Action: SUCCESS
+
+Time: Mon Dec  1 12:33:26 2025
+User: 1091786
+Action: SUCCESS
+
