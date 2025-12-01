@@ -1,0 +1,9 @@
+Username: kudoz
+Player ID: 31
+Total matches: 0
+Wins: 0
+Losses: 0
+Draws: 0
+Total score: 0
+Theme id: 1Friends: 
+END_FRIENDS

@@ -193,7 +193,7 @@ void MatchmakingQueue::matchPlayers() {
         cout << "\n\n\t\t . ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟ Match Found ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ . ݁"
             <<setw(30)<<"\n PLAYER 1"<<setw(20)<< "VS."<<setw(30)<< " PLAYER 2";
 
-        cout << setw(30) << player1->username << setw(20) << "VS." << setw(30) << player2->username;
+        cout << endl<<setw(30) << player1->username << setw(20) << "VS." << setw(30) << player2->username;
         multiPlayer();
         //multiplayer function call
     } else {
