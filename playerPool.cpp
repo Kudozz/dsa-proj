@@ -1,6 +1,6 @@
 #include<iostream>
 #include"playerPool.h"
-
+#include"authentication.h"
 
 PlayerPool::PlayerPool() {
     capacity = 30; 
@@ -34,7 +34,7 @@ Player* PlayerPool::getRandomPlayer() {
     while(inQueue[index])
         index = (index+1)%size;
 
-    if(!inQueue[index]) {
+    if(!inQueue[index] && players[index]->username != getCurrentUser()) {
         inQueue[index] = true;
       //  cout<<"DEBUG player at "<<index<<" IS "<<players[index]->username;
         return players[index]; 

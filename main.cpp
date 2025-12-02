@@ -85,9 +85,9 @@ void mainMenu() {
         case 1:{
             int choice;
 
-            cout<<"Single Player Menu: ";
-            cout<<"\n1.Play"
-                <<"\n0.Exit"<<endl;
+            cout << "\n\n\n. ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟSingle Player Menu: ";
+            cout<<"\n(1) Play"
+                <<"\n(0) Exit"<<endl;
 
             cout<<"Enter choice: ";
             cin>>choice;
@@ -113,9 +113,9 @@ void mainMenu() {
 
         case 2: {
             int choice;
-            cout<<"MultiPlayer Menu: ";
-            cout<<"\n1.Play"
-                <<"\n0.Exit"<<endl;
+            cout << "\n\n\n. ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟMultiPlayer Menu: ";
+            cout<<"\n(1) Play"
+                <<"\n(0) Exit"<<endl;
 
             cout<<"Enter choice: ";
             cin>>choice;

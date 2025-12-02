@@ -112,7 +112,7 @@ Player* loadPlayer(const string& user){
     }
 
     file.close();
-    cout<<"Player profile loaded!\n";
+//    cout<<"Player profile loaded!\n";
 
     logSysActivity(player->username,"Loading player","SUCCESS");
 

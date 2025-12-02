@@ -178,13 +178,6 @@ bool isGridFull() {
     return true;
 }
 
-void clearGrid() {
-    for(int i=1; i<M-1; i++) {
-        for(int j=1; j<N-1; j++)
-            grid[i][j] = 0;
-}
-}
-
 void multiPlayer(Player *player1Profile, Player *player2Profile){ // main game
     srand(time(0));
 
@@ -222,6 +215,8 @@ void multiPlayer(Player *player1Profile, Player *player2Profile){ // main game
     freeze[0] = freeze[1] = false;
     float freezeTime[2];
     float freezeDuration = 3;
+
+    clearGrid();
 
     bool Game = true;
  
@@ -531,6 +526,7 @@ void multiPlayer(Player *player1Profile, Player *player2Profile){ // main game
         window.draw(timeText);
 
         window.display();
+        
     }
 
     return;

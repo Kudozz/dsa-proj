@@ -1,5 +1,6 @@
 #include "leaderboard.h"
 #include"Player.h"
+#include"playerPool.h"
 //Wajiha Abbasi 24i-2059
 //Hanaa Sajid  24i-2029
 //PROJECT: XONIX GAME
@@ -125,33 +126,39 @@ public:
 
 void leaderboard(){
    MinHeap board;
-   Player* temp = new Player("kudoz", 45, 4500, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp);
-   Player *temp2 = new Player("wajiha", 45, 457, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp2);
+   PlayerPool playerpool; 
+   playerpool.loadFromFile();
+
+   for(int i=0; i<playerpool.size; i++) {
+    board.updateLeaderboard(playerpool.players[i]);
+   }
+//    Player* temp = new Player("kudoz", 45, 4500, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp);
+//    Player *temp2 = new Player("wajiha", 45, 457, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp2);
 
 
-    Player *temp3 = new Player("wajiha", 45, 356, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp3);
+//     Player *temp3 = new Player("wajiha", 45, 356, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp3);
 
-   Player *temp4 = new Player("harma", 45, 34, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp4);
+//    Player *temp4 = new Player("harma", 45, 34, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp4);
 
-   Player *temp5 = new Player("uswa", 45, 760, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp5);
-   Player *temp6 = new Player("zaytunah", 45, 120, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp6);
-   Player *temp7 = new Player("haadiya", 45, 30, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp7);
-   Player *temp8 = new Player("maryam", 45, 500, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp8);
-   Player *temp9 = new Player("ayesha", 45, 20, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp9);
-   Player *temp10 = new Player("musa bhai", 45, 100, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp10);
+//    Player *temp5 = new Player("uswa", 45, 760, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp5);
+//    Player *temp6 = new Player("zaytunah", 45, 120, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp6);
+//    Player *temp7 = new Player("haadiya", 45, 30, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp7);
+//    Player *temp8 = new Player("maryam", 45, 500, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp8);
+//    Player *temp9 = new Player("ayesha", 45, 20, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp9);
+//    Player *temp10 = new Player("musa bhai", 45, 100, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp10);
 
-   Player *temp11 = new Player("mam naveen", 45, 5600, 56, 4, 6, 3, 6);
-   board.updateLeaderboard(temp11);
+//    Player *temp11 = new Player("mam naveen", 45, 5600, 56, 4, 6, 3, 6);
+//    board.updateLeaderboard(temp11);
 
    board.displayLeaderboard();
 

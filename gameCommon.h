@@ -21,4 +21,6 @@ struct Enemy
     void move();
 };
 
+void clearGrid();
+
 #endif

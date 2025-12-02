@@ -5,11 +5,11 @@
 #include<fstream>
 
 class PlayerPool {
-    Player** players;
-    int size; 
     bool* inQueue; 
     int capacity;
-public: 
+public:
+    Player **players;
+    int size;
     PlayerPool();
     void loadFromFile(); 
     Player* getRandomPlayer();
