@@ -12,6 +12,6 @@
 void drop(int y, int x);
 
 // Game mode
-void singlePlayer();
+void singlePlayer(int mode);
 
 #endif

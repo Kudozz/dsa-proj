@@ -18,6 +18,12 @@ using namespace std;
 
 Inventory i;
 
+void initializeSYS(){
+    initiateFriendSys();
+    cout<<"Game initiated successfully"<<endl;
+
+}
+
 void mainMenu();
 
 string user = getCurrentUser(); 
@@ -38,8 +44,11 @@ int main() {
         cin>>x;
 
        switch(x) { 
-        case 0:
+        case 0:{
+            cleanup();
+            clearCurrentPlayer();
             return 0;
+        }
         case 1:
             if (login()){
                 mainMenu();
@@ -72,7 +81,6 @@ void mainMenu() {
         <<"(3) Leaderboard"<<endl
         <<"(4) Inventory"<<endl
          <<"(5) Profile"<<endl
-         <<"(6) Friends"<<endl
         <<"(0) Logout"<<endl;
 
     int op;
@@ -80,25 +88,42 @@ void mainMenu() {
 
     switch(op) {
         case 0: {
+            Player* p= getCurrentPlayer();
+
+            if(p){
+                savePlayer(*p);
+            }
+
+            clearCurrentPlayer();
+            
             return;
         }
         case 1:{
             int choice;
+            int mode=0;
+
+                cout<<"\n\nSelect difficulty: "
+                <<"\n1. Easy"
+                <<"\n2. normal"
+                <<"\n3. Hard"
+                <<"\n0.exit"
+                <<"\nEnter mode choice: ";
+                cin>>mode;
+                cout<<endl;
 
             cout << "\n\n\n. ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟSingle Player Menu: ";
             cout<<"\n(1) Play"
                 <<"\n(0) Exit"<<endl;
 
-            cout<<"Enter choice: ";
-            cin>>choice;
-            switch(choice){
-                case 0:{
-                    return;
+                cout<<"Enter choice: ";
+                cin>>choice;
+                switch(choice){
+                    case 0:{
+                        return;
+                    }
 
-                }
-
-                case 1:{
-                    singlePlayer();
+                    case 1:{
+                    singlePlayer(mode);
                     break;
                 }
 
@@ -125,7 +150,7 @@ void mainMenu() {
                     return;
                 }
                 case 1:{   
-                    matchmakingMenu();
+                    multiPlayer();
                     break;
                 }
 
@@ -147,14 +172,10 @@ void mainMenu() {
             break;
         } 
         case 5: {
-        //   profile();
+          profile();
             break;
         }
 
-        case 6: {
-         //   friends();
-            break;
-        }
         default: {
             cout<<"\nInvalid option, please try again";
             break;

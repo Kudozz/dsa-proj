@@ -12,6 +12,7 @@ using namespace std;
 //Hanaa Sajid  24i-2029
 //PROJECT: XONIX GAME
 
+static FriendSystem* friends = nullptr;
 void profile(){
    
 
@@ -20,9 +21,15 @@ int choice;
             cout<<"\n ⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨ Profile Menu ୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n"
             <<"1. Add friend\n"
             <<"2. Remove friend\n"
-            <<"3. Display match history\n "
-            <<"4. View friends\n"
-            <<"5. Total points\n"
+            <<"3. View friends\n"
+            <<"4. Send friend request\n"
+            <<"5. View pending friend requests\n"
+            <<"6. Accept friend request\n"
+            <<"7. Reject friend request\n"
+            <<"8. Find mutual friends\n"
+            <<"9. View notifications\n"
+            <<"10. Display match history\n"
+            <<"11. Total points\n"
             <<"0. Exit\n"
             <<"Enter choice: ";
             cin>>choice;
@@ -55,18 +62,120 @@ int choice;
                 break;
                 }
 
-                case 3:
-                displayMatchHistory();
+                case 3:{
+                    displayFriends();
+                    break;
+                }
 
+                
+
+                case 4:{
+                    Player* player= getCurrentPlayer();
+
+                    if(!player){
+                        cout<<"no player loaded!!"<<endl;
+                        return;
+                    }
+
+                    string fUser;//friend's username
+
+                    cout<<"Enter friend's username: ";
+                    cin>>fUser;
+
+                    FriendSystem* fs = getFriendSys();
+                    fs->sendFriendRequest(player->username, fUser);
+
+                }
+                
+
+                case 5:{
+                    Player* player= getCurrentPlayer();
+
+                    if(!player){
+                        cout<<"no player loaded!!"<<endl;
+                        return;
+                    }
+
+                    FriendSystem* fs = getFriendSys();
+                    fs->displayPendingRequests(player->username);
+                }
+
+                case 6:{
+                    Player* player= getCurrentPlayer();
+
+                    if(!player){
+                        cout<<"no player loaded!!"<<endl;
+                        return;
+                    }
+                    FriendSystem* fs= getFriendSys();
+                    fs->displayPendingRequests(player->username);
+
+                    string from;
+                    cout<<"Accept request from: ";
+                    cin>>from;
+
+                    fs->acceptFriendRequest(from,player->username);
+                }
+
+                case 7:{
+                    Player* player= getCurrentPlayer();
+
+                    if(!player){
+                        cout<<"no player loaded!!"<<endl;
+                        return;
+                    }
+
+                    FriendSystem* fs= getFriendSys();
+                    fs->displayPendingRequests(player->username);
+
+                    string from;
+                    cout<<"Reject request from: ";
+                    cin>>from;
+
+                    fs->rejectFriendRequest(from,player->username);
+                }
+
+                case 8:{
+                    Player* player= getCurrentPlayer();
+
+                    if(!player){
+                        cout<<"no player loaded!!"<<endl;
+                        return;
+                    }
+
+                    
+                    string f;
+                    cout<<"Enter friend's name: ";
+                    cin>>f;
+
+                    FriendSystem* fs= getFriendSys();
+                    fs->findMutualFriends(player->username,f);
+
+                }
+
+                case 9:{
+                    Player* player= getCurrentPlayer();
+
+                    if(!player){
+                        cout<<"no player loaded!!"<<endl;
+                        return;
+                    }
+
+                    FriendSystem* fs= getFriendSys();
+                    fs->displayNotifications(player->username);
+                }
+
+
+                
+                case 10:{
+                    displayMatchHistory();
+                    break;
+                }
+
+                case 11:
+                    getTotalPoints();
                 break;
 
-                case 4:
-                displayFriends();
-                break;
-
-                case 5:
-                getTotalPoints();
-                break;
 
             }
 
@@ -181,28 +290,7 @@ void displayFriends(){
 
     player->displayFriends();
 
-    // string friendsFile = "profile/" + currentUser + "_friends.txt";
-    // ifstream file(friendsFile);
-    
-    // if (!file.is_open()) {
-    //     cout << "\nNo friends added yet!\n";
-    //     return;
-    // }
-    
-    // string line;
-    // while (getline(file, line)){
-    //     size_t pos = line.find(':');
-        
-    //     if(pos != string::npos){
-    //         string username = line.substr(0,pos);
-    //         string playerID = line.substr(pos+1);
-            
-    //         friends.addFriend(username,playerID);
-    //     }
-    // }
-    
-    // file.close();
-    // friends.displayFriends();
+
 }
 
 //logging math resiult to user's mathes file
@@ -222,28 +310,9 @@ void logMatch(string username, string opponent,int myPoints, int oppPoints){
 
     cout<<"Match logged successfully!!!1"<<endl;
 
-    // string filename = "profile/" + username +"_matches.txt";
-    // ofstream file(filename, ios::app);
+
     
-    // if(file.is_open()){
-    //     string result;
-        
-    //     if(myPoints>oppPoints){
-    //         result ="WIN";
-    //     }
-
-    //     else if(myPoints<oppPoints){
-    //         result ="LOSS";
-    //     }
-
-    //     else{
-    //         result ="DRAW";
-    //     }
-        
-    //     file << opponent <<":"<<to_string(myPoints)<<":"<<to_string(oppPoints)<<":"<<result<<endl;
-
-    //     file.close();
-    // }
+  
 }
 
 //displays match history by reading user's matches file
@@ -268,28 +337,6 @@ void displayMatchHistory(){
     <<"\n⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊\n";
 
 
-    // string line;
-    // int matchNum = 1;
-    
-    // while (getline(file, line)){
-    //     size_t pos1 = line.find(':');
-    //     size_t pos2 = line.find(':',(pos1+1));
-    //     size_t pos3 = line.find(':',(pos2+1));
-        
-    //     if (pos1 != string::npos && pos2 != string::npos && pos3 != string::npos){
-    //         string opponent = line.substr(0, pos1);
-    //         string myScore = line.substr((pos1+1),(pos2-pos1-1));
-    //         string oppScore = line.substr(pos2 + 1, pos3 - pos2 - 1);
-    //         string result = line.substr(pos3 + 1);
-            
-    //         cout<<"Match "<<matchNum++<<": vs "<<opponent 
-    //             <<"Score: "<<myScore <<" - "<<oppScore 
-    //             <<"Result: "<<result <<"\n";
-    //     }
-    // }
-    
-    //cout << "⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n";
-    //file.close();
 }
 
 //total points calculated by reading user's points from their matches file
@@ -302,30 +349,30 @@ int getTotalPoints(){
     }
 
     return player->totalScore;
-    // string filename ="profile/"+ user +"_matches.txt";
-    
-    // ifstream file(filename);
-    
-    // if(!file.is_open()){
-    //     return 0;
-    // }
-    
-    // int total=0;
-    // string line;
-    
-    // while(getline(file, line)){
 
-    //     int pos1=line.find(':');
-    //     int pos2=line.find(':',(pos1+1));
-        
-    //     if((pos1!= -1)&&(pos2!= -1)){
-    //         string myScore = line.substr((pos1+1),(pos2-pos1-1));
+}
 
-    //         total += stoi(myScore);
-    //     }
 
-    // }
-    
-    // file.close();
-    // return total;
+void initiateFriendSys(){
+    if(!friends){
+        friends = new FriendSystem();
+        friends->loadPlayers();
+
+    }
+}
+
+FriendSystem* getFriendSys(){
+    if(!friends){
+        initiateFriendSys();
+    }
+
+    return friends;
+}
+
+void cleanup(){
+    if(friends){
+        delete friends;
+
+        friends = nullptr;
+    }
 }

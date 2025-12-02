@@ -4,6 +4,7 @@
 #include"Player.h"
 #include<iostream>
 #include<string>
+#include "friends.h"
 #include"SystemLogs.h"
 using namespace std;
 
@@ -21,7 +22,9 @@ using namespace std;
     void displayMatchHistory();
     int getTotalPoints();
     bool userExistsInAudit(string username,int playerID);
-//     void clear();//should clear all friends..after submission
+    void initiateFriendSys();
+    FriendSystem* getFriendSys();
+    void cleanup();
 
 
 

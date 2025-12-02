@@ -7,6 +7,7 @@
 #include<cstring>
 #include<string.h>
 #include"singlePlayer.h"
+#include"SaveGame.h"
 #include"Player.h"
 
 using namespace std;
@@ -34,7 +35,118 @@ using namespace sf;
 //When you complete your trail, the game calls drop() starting at each enemy's position. Any empty area reachable
 // from an enemy gets marked -1. Everything NOT marked -1 becomes captured territory!
 
-void singlePlayer() {//main game
+SaveGameManager save;
+
+void saveGame(int grid[M][N], int x, int y,int dx, int dy, int points, int powerups, int enemyCount, int mode, int multiplier, int threshold, int rewardCounter, Enemy a[10]){
+    Player* p= getCurrentPlayer();
+
+    if(!p){
+        cout<<"No player loaded"<<endl;
+        return;
+    }
+
+    GameState* state =new GameState();
+
+    state->username= p->username;
+    state->playerID = p->playerID;
+    state->playerX = x;
+    state->playerY = y;
+    state->playerDX = dx;
+    state->playerDY = dy;
+    state->points = points;
+    state->powerups = enemyCount;
+    state->mode = mode;
+    state->multiplier = multiplier;
+    state->threshold = threshold;
+    state->rewardCounter = rewardCounter;
+    state->enemyCount = enemyCount;
+    state->playerID = p->playerID;
+
+    for(int i=0;i<enemyCount; i++){
+        state->enemies[i].x =a[i].x;
+        state->enemies[i].y =a[i].y;
+        state->enemies[i].dx =a[i].dx;
+        state->enemies[i].dy =a[i].dy;
+    }
+
+    for(int i=0; i<M; i++){
+        for(int j=0; j<N;  j++){
+            if(grid[i][j]!=0){
+                state->addTile(j,i,grid[i][j]);
+            }
+        }
+    }
+
+
+    if(save.saveGame(state,p->username, p->playerID)){
+        cout<<"Save saved successfully"<<endl;
+        logSysActivity(p->username,"Save Game","SUCCESS");
+    }
+
+    delete state;
+
+}
+
+
+bool restoreGame(int grid[M][N], int& x, int& y,int& dx, int& dy, int &points, int &powerups, int &enemyCount, int& mode, int& multiplier, int &threshold, int &rewardCounter, Enemy a[10]){
+     Player* p= getCurrentPlayer();
+
+    if(!p){
+        cout<<"No player loaded"<<endl;
+        return false;
+    }
+
+    string saveID = save.getMostRecentSave(p->username);
+
+    if(saveID.empty()){
+        return false;
+    }
+
+    GameState* state= save.loadGame(saveID);
+
+    if(!state){
+        return false;
+    }
+
+    x = state->playerX;
+    y = state->playerY;
+    dx = state->playerDX;
+    dy = state->playerDY;
+    points = state->points;
+    powerups = state->powerups;
+    enemyCount = state->enemyCount;
+    mode = state->mode;
+    multiplier = state->multiplier;
+    threshold = state->threshold;
+    rewardCounter = state->rewardCounter;
+
+    //rstores enemy data
+    for(int i = 0; i < enemyCount; i++){
+        a[i].x = state->enemies[i].x;
+        a[i].y = state->enemies[i].y;
+        a[i].dx = state->enemies[i].dx;
+        a[i].dy = state->enemies[i].dy;
+    }
+    
+    //clears grid 
+    for(int i = 0; i < M; i++){
+        for(int j = 0; j < N; j++){
+            grid[i][j] = 0;
+        }
+    }
+
+    //restore grid from linked list
+    TileNode* tile = state->tilesHead;
+    while(tile){
+        grid[tile->y][tile->x] = tile->value;
+        tile = tile->next;
+
+    }
+    
+    delete state;
+    return true;
+}
+void singlePlayer(int mode) {//main game
     srand(time(0));
 
     if(isUserLoggedIn()){ //last theme prefernce
@@ -127,6 +239,26 @@ void singlePlayer() {//main game
     //bg color(if there iis no background image)
     Color backgroundColor(themeColors.r_background,themeColors.g_background,themeColors.b_background);
 
+     
+    
+    int enemyCount;
+    
+
+    if(mode==0){
+        return;   //will take back to 
+    }
+
+    else if(mode==2){
+        enemyCount=6;
+    }
+
+    else if(mode==3){
+        enemyCount=8;
+    }
+
+    else{
+        enemyCount=4; //easy mode is default mode
+    }
 
     Enemy a[10];//there can be upto 10 enemies, we are using 4
 
@@ -155,6 +287,44 @@ void singlePlayer() {//main game
         int multiplier = 2; 
         int threshold = 10; 
         int rewardCounter = 0, powerups = 0;
+        bool flag=false;
+
+    Player* player = getCurrentPlayer();
+    if(player &&(save.hasSavedGame(player->username))){
+        cout <<"\n⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ Saved Game Found! ⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n";
+        cout <<"Continue from saved game? (y/n): ";
+        char choice;
+        
+        cin>>choice;
+        
+        if((choice == 'y') || (choice == 'Y')){
+            if(restoreGame(grid, x, y, dx, dy, points, powerups,enemyCount, mode, multiplier, threshold,rewardCounter, a)){
+                 flag = true;
+                cout<<"Game restored!!1! Starting where you left off...\n";
+            }
+        } 
+        else{
+            //deletes old save and starts new game
+            string oldSave = save.getMostRecentSave(player->username);
+            
+            if(!oldSave.empty()){
+                save.deleteSave(oldSave);
+            }
+        }
+    }
+    
+    //draws borders if starting new game
+    if(!flag){
+            //draw borders
+        for (int i = 0; i < M; i++) {
+            for (int j = 0; j < N; j++)
+                if (i == 0 || j == 0 || i == M - 1 || j == N - 1)
+                    grid[i][j] = 1;
+        }
+
+        x = 10;
+        y = 0;
+    }
 
     while (window.isOpen()) {
         float time = clock.getElapsedTime().asSeconds();

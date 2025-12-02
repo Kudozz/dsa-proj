@@ -1,7 +1,9 @@
 #include "authentication.h"
-#include"player.h"
 #include"SystemLogs.h"
 #include"Player.h"
+#include"SaveGame.h"
+#include"profile.h"
+#include"friends.h"
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -13,6 +15,7 @@ using namespace std;
 //Hanaa Sajid  24i-2029
 //PROJECT: XONIX GAME
 
+extern  SaveGameManager save;//it alr exists in singleplayer file
 static string currentUser = "";
 
 void setCurrentUser(const string& username){
@@ -242,53 +245,7 @@ bool verifySecurityAnswer(const string& username, const string& answer){
 
 }
 
-// //verify pass during login
-// bool verifyPassword(const string& username, const string& password){
-//     ifstream file("audit.txt");
-    
-//     if(!file.is_open()){
-//         return false;
-//     }
-    
-//     string line, user, hash;
-//     string inputHash = hashPassword(password);
-    
-//    while(getline(file, line)){
-//         user ="";
-//         hash ="";
-//          int i = 0;
-//          int l=line.length();
-    
-//         //read username
-//         while((i <l) && (line[i] !=':')){
-//             user += line[i];
-            
-//             i++;
-//         }
-    
-//         if(i >=l){
-//             continue; //no colon found...skip line
-//         }
-    
-//         i++; //skip the colon
-    
-//         while((i<l)&&(line[i]!=':')){
-//             hash += line[i];
-//             i++;
-//         }
-    
-//         if((user== username) && (hash == inputHash)){
-//             file.close();
 
-//             return true;
-//         }
-
-//     }
-
-    
-//     file.close();
-//     return false;
-// }
 
 bool verifyPassword(const string& username, const string& password){
     ifstream file("audit.txt");
@@ -390,6 +347,10 @@ bool signup(){
     
     if(player){
         setCurrentPlayer(player);
+        
+        FriendSystem*  fs =getFriendSys();
+        fs->addPlayer(username,newID);
+
     }
 
     cout<<"\nRegistration successful! Welcome, "<<username<<"!"<<endl;
@@ -398,12 +359,91 @@ bool signup(){
     return true;
 }
 
+void SaveGameMenu(const string& user){
+    cout<<"\n\n\t    ⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ "<<endl;
+    cout<<"\t         SAVED GAME DETECTED"<<endl;
+    cout<<"\t    ⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ \n"<<endl;
+    
+    string saveID = save.getMostRecentSave(user);//last save 
+
+    cout<<"\n\n\t    ⋆. 𐙚 ̊ ✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦⋆. 𐙚 ̊ "<<endl;
+    cout<<"What would you like to do?"<<endl;
+    cout<<"1. Continue saved game"<<endl;
+    cout<<"2. Start new game"<<endl;
+    cout<<"Enter choice: ";
+
+}
+
+bool SaveGameChoice(const string& username){
+    int choice;
+    cin>>choice;
+
+    string saveID= save.getMostRecentSave(username);
+
+    switch(choice){
+        case 1:{
+            cout<<"Loading saved game...."<<endl;
+            logSysActivity(username,"Continued Saved game","SUCCESS");
+            return true;
+        }
+
+        case 2:{
+            char c;
+            cout<<"Starting new game will delete your saved game. Ar you sure(y/n)?";
+            cin>>c;
+
+            
+            if(c == 'y' || c == 'Y') {
+                if(!saveID.empty()) {
+                    if(save.deleteSave(saveID)) {
+                        cout<<"\n  Previous save deleted."<<endl;
+                        cout<<" You can start a new game from the main menu.\n"<<endl;
+                        logSysActivity(username,"Deleted save to start new game","SUCCESS");
+                    } 
+                    
+                    else{
+                        cout<<"\n Failed to delete save file."<<endl;
+                    }
+
+                } 
+                
+                else {
+                    cout<<"\n  No save file found to delete.\n"<<endl;
+                }
+            } 
+            
+            else{
+                cout<<"\n  Save deletion cancelled."<<endl;
+                SaveGameChoice(username);
+                
+                return false;
+            }
+
+            break;
+        }
+        
+        case 3: {
+            cout<<"\n Continuing to main menu."<<endl;
+            cout<<"  You can manage your save from the Single Player menu.\n"<<endl;
+            logSysActivity(username, "Deferred save decision to main menu", "INFO");
+            break;
+        }
+        
+        default: {
+            cout<<"\n  Invalid choice! Please enter 1-3."<<endl;
+            SaveGameChoice(username);
+            break;
+        }
+
+    }
+    return false;
+}
 bool login(){
     cout<<"\n\n\t✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦"<<endl;
     cout<<"\t           USER LOGIN"<<endl;
     cout<<"\t✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦\n"<<endl;
     
-    string username, password;
+    string username,teacher, password;
     int attempts = 0;
     const int max_attempts= 3;
     
@@ -422,7 +462,11 @@ bool login(){
         cout<<"Enter password(Attempt "<<(attempts+1)<<"/"<<max_attempts <<"): ";
         cin >> password;
         
-        if(verifyPassword(username, password)){
+        cout<<"Enter name of first grade science teacher: ";
+        cin>>teacher;
+
+
+        if(verifyPassword(username, password)&&(verifySecurityAnswer(username,teacher))){
           
             setCurrentUser(username);
 
@@ -432,6 +476,16 @@ bool login(){
             setCurrentPlayer(player);
         
           
+            FriendSystem* fs= getFriendSys();
+            if(!fs->isPlayer(username)){//addd in sys if only alr present
+                fs->addPlayer(username,player->playerID);
+            } 
+
+            int notifs= fs->NotificationCount(username);
+            if(notifs>0){
+                cout<<"\n⋆. 𐙚 ̊  You have "<< notifs <<" notification(s)! ⋆. 𐙚 ̊ \n";
+            }
+
             cout<<"\nLogin successful! Welcome back, "<<username <<"!"<<endl;
             logSysActivity(username,"Login","SUCCESS");
              
