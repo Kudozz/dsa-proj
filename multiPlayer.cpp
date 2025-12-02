@@ -185,7 +185,7 @@ void clearGrid() {
 }
 }
 
-void multiPlayer(){ // main game
+void multiPlayer(Player *player1Profile, Player *player2Profile){ // main game
     srand(time(0));
 
     Font font;
@@ -497,12 +497,30 @@ void multiPlayer(){ // main game
             winnerText.setFillColor(Color::Red);
             winnerText.setPosition(200.f, 470.f);
 
+            if(player1Profile && player2Profile) {
+        // Update both players' totalScore
+            player1Profile->totalScore += player1.points;
+            player2Profile->totalScore += player2.points;
+
             if(player1.points > player2.points) {
                 winnerText.setString("PLAYER 1 WINS!!!!");
+
+                player1Profile->addMatchResult(player2Profile->username, player1.points, player2.points);
+                player2Profile->addMatchResult(player1Profile->username, player2.points, player1.points);
             } else if(player2.points >player1.points) {
                 winnerText.setString("PLAYER 2 WINS!!!");
+
+                player1Profile->addMatchResult(player2Profile->username, player1.points, player2.points);
+                player2Profile->addMatchResult(player1Profile->username, player2.points, player1.points);
             } else {
                 winnerText.setString("TIE!!!!");
+
+                player1Profile->addMatchResult(player2Profile->username, player1.points, player2.points);
+                player2Profile->addMatchResult(player1Profile->username, player2.points, player1.points);
+            }
+
+            savePlayer(*player1Profile);
+            savePlayer(*player2Profile);
             }
 
             window.draw(winnerText);
@@ -517,4 +535,3 @@ void multiPlayer(){ // main game
 
     return;
 }
-

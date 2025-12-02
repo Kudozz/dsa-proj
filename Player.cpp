@@ -22,16 +22,16 @@ void savePlayer(const Player& player){
         return;
     }
 
-    file<<"Username: "<<player.username;
-    file<<"\nPlayer ID: "<<player.playerID;
-    file<<"\nTotal matches: "<<player.matchCount;
-    file<<"\nWins: "<<player.wins;
-    file<<"\nLosses: "<<player.losses;
-    file<<"\nDraws: "<<player.draws;
-    file<<"\nTotal score: "<<player.totalScore;
-    file<<"\nTheme id: "<<player.currentThemeID;
+    file<<"USERNAME "<<player.username;
+    file<<"\nPLAYER_ID "<<player.playerID;
+    file<<"\nMATCH_COUNT "<<player.matchCount;
+    file<<"\nWINS "<<player.wins;
+    file<<"\nLOSSES "<<player.losses;
+    file<<"\nDRAWS "<<player.draws;
+    file<<"\nTOTAL_SCORE "<<player.totalScore;
+    file<<"\nTHEME_ID "<<player.currentThemeID;
 
-    file<<"Friends: \n";
+    file<<"\nFRIENDS \n";
     
     FriendNode* curr = player.friendsHead;
 

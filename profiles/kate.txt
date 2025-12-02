@@ -1,9 +1,10 @@
-Username: kate
-Player ID: 35
-Total matches: 0
-Wins: 0
-Losses: 0
-Draws: 0
-Total score: 0
-Theme id: 1Friends: 
+USERNAME Kate
+PLAYER_ID 43
+MATCH_COUNT 2
+WINS 0
+LOSSES 0
+DRAWS 2
+TOTAL_SCORE 0
+THEME_ID 1
+FRIENDS 
 END_FRIENDS

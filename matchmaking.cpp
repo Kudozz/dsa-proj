@@ -136,7 +136,7 @@ void MatchmakingQueue::display() {
              << setw(20) << temp->player->username;
         
         if (temp->player->username == currentUser) {
-            cout << " (YOU)";
+            cout << "*";
         }
         
         cout << setw(10) << temp->player->totalScore 
@@ -190,12 +190,24 @@ void MatchmakingQueue::matchPlayers() {
     Player* player2 = dequeue();
 
     if(player1->username == getCurrentUser() || player2->username == getCurrentUser()) {
-        cout << "\n\n\t\t . ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟ Match Found ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ . ݁"
-            <<setw(30)<<"\n PLAYER 1"<<setw(20)<< "VS."<<setw(30)<< " PLAYER 2";
+        cout << "\n\n\t\t . ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟ Match Found ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ . ݁"<<endl
+            <<endl<<setw(20)<<" PLAYER 1"<<setw(20)<< "VS."<<setw(30)<< " PLAYER 2"
+            << endl<<setw(20) << player1->username << setw(20) << "VS." << setw(30) << player2->username;
+            cout<<endl;
 
-        cout << endl<<setw(30) << player1->username << setw(20) << "VS." << setw(30) << player2->username;
-        multiPlayer();
-        //multiplayer function call
+            cout << "\n\n\t✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦" << endl;
+            cout << "\t           SET, READY, GO!" << endl;
+            cout << "\t✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦\n"
+                 << endl;
+
+            time_t start = time(0);
+            while (difftime(time(0), start) < 3)
+            {
+                // do nothing — just wait
+            }
+
+            multiPlayer(player1, player2);
+            // multiplayer function call
     } else {
         cout<<"\n"<<player1->username<<" and "<<player2->username<<" are matched for a game!";
     }
@@ -224,6 +236,7 @@ void matchmakingMenu() {
                 } else {
                     // Player* currentPlayer = loadPlayer(getCurrentUser());
                     Player* currentPlayer = getCurrentPlayer();
+                    //cout<<"\nDEBUG curren player ="<<currentPlayer->username;
                     queue.enqueue(currentPlayer, false);
                     queue.waitInQueue(currentPlayer);
                 }

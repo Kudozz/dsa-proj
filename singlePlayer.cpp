@@ -136,6 +136,12 @@ void singlePlayer() {//main game
     float timer = 0, delay = 0.07;
     Clock clock;
 
+
+    Player* currentPlayer = nullptr;
+    if(isUserLoggedIn()) {
+        currentPlayer = getCurrentPlayer();
+    }
+
     //draw borders
     for (int i = 0; i < M; i++)
         for (int j = 0; j < N; j++)
@@ -236,7 +242,6 @@ void singlePlayer() {//main game
 
              if (grid[y][x] == 2) {//if player hits their own path, game is over
                 Game = false;
-                points= 0;
             }
             if (grid[y][x] == 0) //if moving into empty space mark it as trail
                 grid[y][x] = 2;
@@ -316,7 +321,6 @@ void singlePlayer() {//main game
         for (int i = 0; i < enemyCount; i++) 
             if (grid[a[i].y / ts][a[i].x / ts] == 2) {// if the enemy hits ur trail
                 Game = false; //game overrrrrrrrrrr 
-                points= 0;
             }
 
         Text scoreText;
@@ -371,13 +375,17 @@ void singlePlayer() {//main game
         // Rotate and draw enemies
         sEnemy.rotate(10);
 
-        for (int i = 0; i < enemyCount; i++)
-        {
+        for (int i = 0; i < enemyCount; i++){
             sEnemy.setPosition(a[i].x, a[i].y);
             window.draw(sEnemy);
         }
 
         if (!Game) {
+
+            if(currentPlayer && points > 0) {
+                currentPlayer->totalScore += points;
+                savePlayer(*currentPlayer);
+            }
             window.draw(sGameover);//game overrrr
             points = 0; 
             threshold=10;

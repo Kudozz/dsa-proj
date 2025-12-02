@@ -23,9 +23,9 @@ struct GPlayer {
 void drop(int y, int x);
 
 // Game mode
-void multiPlayer();
+void multiPlayer(Player *player1Profile, Player *player2Profile);
 
-void handleCaptureG(Player &player, Enemy a[], int enemyCount, int ownCaptured);
+void handleCapture(GPlayer &player, Enemy a[], int enemyCount, int ownCaptured);
 void updatePlayerMovement(GPlayer &Player, int ownTrail, int oppTrail);
 
 // void checkEnemyCollision(Player& player, int trail, Enemy a[], int enemyCount);

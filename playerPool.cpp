@@ -21,7 +21,8 @@ void PlayerPool::loadFromFile() {
     string username, line;
     while(getline(playerNamesFile, username, ':')) {
         players[size++] = loadPlayer(username);
-        cout<<"\nLoaded "<<username;
+        //cout<<"\nLoaded "<<username;
+       // cout<<"\nDEBUG loaded from profile "<<players[size-1]->username;
         getline(playerNamesFile, line, '\n');
     }
 
@@ -35,6 +36,7 @@ Player* PlayerPool::getRandomPlayer() {
 
     if(!inQueue[index]) {
         inQueue[index] = true;
+      //  cout<<"DEBUG player at "<<index<<" IS "<<players[index]->username;
         return players[index]; 
     }
     return nullptr;
