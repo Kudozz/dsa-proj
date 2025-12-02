@@ -2,6 +2,7 @@
 #define MATCHMAKING_H
 #include<ctime>
 #include"Player.h"
+#include"playerPool.h"
 
 struct QueueEntry {
     Player* player; 
@@ -16,8 +17,9 @@ class MatchmakingQueue {
         QueueEntry** heap;
         int capacity;
         int size;
+        PlayerPool* playerPool;
     public: 
-        MatchmakingQueue(int);
+        MatchmakingQueue(int=10);
         void enqueue(Player* player, bool isBot);
         Player* dequeue();
         Player* peek(); 
@@ -28,20 +30,8 @@ class MatchmakingQueue {
         bool contains(string username);
         void heapify(int);
         void bottomUpHeapify(int);
-};
-
-
-
-class PlayerPool {
-    Player** players;
-    int count; 
-    bool inQueue; 
-    int size;
-public: 
-    PlayerPool();
-    void loadFromFile(); 
-    Player* getRandomPlayer();
-    void markInQueue(string username, bool status);
+        void waitInQueue(Player*);
+        void matchPlayers();
 };
 
 void matchmakingMenu();

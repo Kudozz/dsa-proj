@@ -1,6 +1,8 @@
 #include"matchmaking.h"
 #include"authentication.h"
 #include"Player.h"
+#include"multiPlayer.h"
+#include<fstream>
 #include<iostream>
 #include<iomanip>
 #include<cstdlib>
@@ -11,10 +13,13 @@ QueueEntry::QueueEntry(Player*& player, time_t entryTime, bool isBot) {
     this->isBot = isBot;
 }
 
-MatchmakingQueue::MatchmakingQueue(int capacity = 10) {
+MatchmakingQueue::MatchmakingQueue(int capacity) {
     this->capacity = capacity;
     heap = new QueueEntry*[capacity];
     size = 0;
+
+    playerPool = new PlayerPool;
+    playerPool->loadFromFile();
 }
 
 void MatchmakingQueue::heapify(int i) {
@@ -59,12 +64,15 @@ void MatchmakingQueue::enqueue(Player *player, bool isBot) {
 }
 Player *MatchmakingQueue::dequeue() {
     QueueEntry* temp = heap[0];
+    Player* player = temp->player;
 
     swap(heap[0], heap[size-1]);
     size--;
     heapify(0);
 
-    return temp->player;
+    delete temp;
+
+    return player;
 }
 
 Player *MatchmakingQueue::peek() {
@@ -78,8 +86,13 @@ void MatchmakingQueue::remove(string username) {
         if(heap[i]->player->username == username) {
             swap(heap[i], heap[size-1]);
             size--;
-            heapify(i);
-            bottomUpHeapify(i);
+
+            if(i == 0)
+                heapify(0);
+            else if(heap[i]->player->totalScore > heap[(i-1)/2]->player->totalScore)
+                bottomUpHeapify(i);
+            else
+                heapify(i);
         }
     }
 }
@@ -92,6 +105,19 @@ int MatchmakingQueue::getPosition(string username) {
 }
 
 void MatchmakingQueue::display() {
+    QueueEntry** tempArr = new QueueEntry*[size];
+    for(int i=0; i<size; i++) {
+        tempArr[i] = heap[i];
+    }
+
+    for (int i = 0; i < size; i++) {
+    for (int j = i + 1; j < size; j++) {
+        if (tempArr[j]->player->totalScore > tempArr[i]->player->totalScore) {
+            swap(tempArr[i], tempArr[j]);
+        }
+    }
+}
+
     cout << "\n\n\t\t. ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟ ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ .\n\n ݁"
          << "\n\t\t\t\t Current Queue \n\n"
          << "\t\t. ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟ ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ .\n\n";
@@ -104,13 +130,13 @@ void MatchmakingQueue::display() {
     
     // Display players in priority order (sorted by score)
     for (int i = 0; i <size; i++) {
-        QueueEntry* temp = heap[i];
+        QueueEntry* temp = tempArr[i];
         
         cout << setw(10) << (i + 1) 
              << setw(20) << temp->player->username;
         
         if (temp->player->username == currentUser) {
-            cout << " (YOU)";
+            cout << "*";
         }
         
         cout << setw(10) << temp->player->totalScore 
@@ -121,6 +147,7 @@ void MatchmakingQueue::display() {
     cout << "Players in queue: " << size << "\n";
     cout << "Minimum for match: 2\n";
     
+    delete[] tempArr;
 }
 bool MatchmakingQueue::contains(string username) {
     for(int i=0; i<size; i++) {
@@ -130,16 +157,61 @@ bool MatchmakingQueue::contains(string username) {
     return false;
 }
 
-PlayerPool::PlayerPool() {
-    size = 15; 
-    count = 0;
-    players = new Player *[size];
-    
+void MatchmakingQueue::waitInQueue(Player* player) {
+    int delay = (rand() % 3) + 2;
+
+    time_t lastAddTime = time(0);
+
+    bool userInQueue = true;
+    while(userInQueue) {
+        if(difftime(time(0), lastAddTime) >= delay) {
+            Player* randomPlayer = playerPool->getRandomPlayer();
+            if(randomPlayer!= nullptr) {
+                enqueue(randomPlayer, true);
+                cout<<"\n"<<randomPlayer->username<<" joined the queue";
+            }
+            delay = (rand()%2)+4;
+            //timer
+
+            display();
+            lastAddTime = time(0);
+        }
+
+        if(size >=2) {
+            matchPlayers();
+            if(!contains(getCurrentUser()))
+                userInQueue = false;
+        }
+    }
 }
 
+void MatchmakingQueue::matchPlayers() {
+    Player* player1 = dequeue();
+    Player* player2 = dequeue();
 
-void PlayerPool::loadFromFile() {
-    
+    if(player1->username == getCurrentUser() || player2->username == getCurrentUser()) {
+        cout << "\n\n\t\t . ݁₊ ⊹ . ݁˖ . ݁. ݁ ˖ ϟ Match Found ⚡︎ ϟ ˖ ݁ .. ݁₊ ⊹ . ݁˖ . ݁"<<endl
+            <<endl<<setw(20)<<" PLAYER 1"<<setw(20)<< "VS."<<setw(30)<< " PLAYER 2"
+            << endl<<setw(20) << player1->username << setw(20) << "VS." << setw(30) << player2->username;
+            cout<<endl;
+
+            cout << "\n\n\t✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦" << endl;
+            cout << "\t           SET, READY, GO!" << endl;
+            cout << "\t✦•┈๑⋅⋯⋆ ˚⋆୨♡୧⋆ ˚⋆⋯⋅๑┈•✦\n"
+                 << endl;
+
+            time_t start = time(0);
+            while (difftime(time(0), start) < 3)
+            {
+                // do nothing — just wait
+            }
+
+            multiPlayer(player1, player2);
+            // multiplayer function call
+    } else {
+        cout<<"\n"<<player1->username<<" and "<<player2->username<<" are matched for a game!";
+    }
+    return;
 }
 
 MatchmakingQueue queue;
@@ -163,12 +235,21 @@ void matchmakingMenu() {
                     return;
                 } else {
                     // Player* currentPlayer = loadPlayer(getCurrentUser());
-                   Player* player = new Player("kudoz", 2, 5, 2, 5, 2, 4, 4);
-                    queue.enqueue(player, false);
+                    Player* currentPlayer = getCurrentPlayer();
+                    //cout<<"\nDEBUG curren player ="<<currentPlayer->username;
+                    queue.enqueue(currentPlayer, false);
+                    queue.waitInQueue(currentPlayer);
                 }
+                break;
             }
             case 2: {
                 queue.display();   
+                break;
+            }
+
+            default: {
+                cout<<"\nIncorrect option";
+                continue;
             }
         }
     }
